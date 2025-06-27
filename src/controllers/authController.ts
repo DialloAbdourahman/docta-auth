@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
-import { UserService } from "../services/userService";
+import { AuthService } from "../services/authService";
 import { OrchestrationResult } from "../utils/orchestration-result";
 import { EnumStatusCode } from "../enums/status-codes";
 
-export class UserController {
+export class AuthController {
   public static async createUser(req: Request, res: Response): Promise<void> {
     const userData = req.body;
-    const newUser = await UserService.createUser(userData);
+    const newUser = await AuthService.createUser(userData);
     res.status(201).json(
       OrchestrationResult.item<string>({
         code: EnumStatusCode.BAD_REQUEST,
