@@ -1,0 +1,26 @@
+import app from "./app";
+import config from "./config";
+import mongoose from "mongoose";
+
+const start = async () => {
+  try {
+    await mongoose.connect(config.mongoUri);
+    console.log("MongoDB connected");
+    console.log("Registered models:", mongoose.modelNames());
+
+    app.listen(config.port, () => {
+      console.log(`Doctor Auth API running on port ${config.port}`);
+    });
+
+    process.on("SIGINT", async () => {
+      console.log("Gracefully shutting down...");
+      await mongoose.disconnect();
+      process.exit(0);
+    });
+  } catch (error) {
+    console.error("MongoDB connection error:", error);
+    process.exit(1);
+  }
+};
+
+start();
