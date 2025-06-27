@@ -1,19 +1,28 @@
 import { EnumStatusCode } from "../enums/status-codes";
 
+export type ErrorResult = {
+  code: EnumStatusCode;
+  message: string;
+};
+
 export type PaginatedResult<T> = {
   code: EnumStatusCode;
-  page: number;
-  itemsPerPage: number;
-  totalPages: number;
-  totalItems: number;
-  data: T[];
   message: string;
+  data: {
+    items: T[];
+    totalItems: number;
+    itemsPerPage: number;
+    page: number;
+    totalPages: number;
+  };
 };
 
 export type SimpleItemResult<T> = {
   code: EnumStatusCode;
-  data: T;
   message: string;
+  data: {
+    item: T;
+  };
 };
 
 export class OrchestrationResult {
@@ -34,12 +43,14 @@ export class OrchestrationResult {
   }): PaginatedResult<T> {
     return {
       code,
-      page,
-      itemsPerPage,
-      totalPages: Math.ceil(totalItems / itemsPerPage),
-      totalItems,
-      data,
       message,
+      data: {
+        items: data,
+        totalItems,
+        itemsPerPage,
+        page,
+        totalPages: Math.ceil(totalItems / itemsPerPage),
+      },
     };
   }
 
@@ -54,7 +65,9 @@ export class OrchestrationResult {
   }): SimpleItemResult<T> {
     return {
       code,
-      data,
+      data: {
+        item: data,
+      },
       message,
     };
   }
