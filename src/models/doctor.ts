@@ -8,6 +8,7 @@ export interface IDoctor {
   biography: string;
   consultation_fee: number;
   is_verified: boolean;
+  isDeleted: boolean;
 }
 
 export interface IDoctorDocument extends IDoctor, Document {}
@@ -20,6 +21,7 @@ const DoctorSchema = new Schema<IDoctorDocument>(
       type: Schema.Types.ObjectId,
       ref: UserModel,
       required: true,
+      onDelete: "cascade",
     },
     specialty: {
       type: Schema.Types.ObjectId,
@@ -29,6 +31,7 @@ const DoctorSchema = new Schema<IDoctorDocument>(
     biography: { type: String, required: false },
     consultation_fee: { type: Number, required: false },
     is_verified: { type: Boolean, default: false },
+    isDeleted: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

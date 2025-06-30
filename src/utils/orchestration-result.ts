@@ -20,9 +20,11 @@ export type PaginatedResult<T> = {
 export type SimpleItemResult<T> = {
   code: EnumStatusCode;
   message: string;
-  data: {
-    item: T;
-  };
+  data:
+    | {
+        item: T;
+      }
+    | undefined;
 };
 
 export class OrchestrationResult {
@@ -60,21 +62,13 @@ export class OrchestrationResult {
     message,
   }: {
     code: EnumStatusCode;
-    data: T;
     message: string;
+    data?: T;
   }): SimpleItemResult<T> {
     return {
       code,
-      data: {
-        item: data,
-      },
       message,
+      data: data === undefined ? undefined : { item: data },
     };
   }
 }
-
-// const data = OrchestrationResult.item<string>({
-//   code: EnumStatusCode.SUCCESS,
-//   data: "",
-//   message: "",
-// });

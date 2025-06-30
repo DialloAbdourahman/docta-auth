@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
 import { body, ValidationChain } from "express-validator";
-import { validateRequest } from "./validate-request";
+import { validateRequest } from "../middleware/validate-request";
 
 // Type alias for Validator Middleware
 type ValidatorMiddleware = ValidationChain | RequestHandler;

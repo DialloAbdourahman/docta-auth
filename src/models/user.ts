@@ -11,7 +11,8 @@ export interface IUser {
   name: string;
   email: string;
   password: string;
-  phoneNumber: string;
+  activationToken?: string | null;
+  forgotPasswordToken?: string | null;
   isActive: boolean;
   isDeleted: boolean;
   createdAt: Date;
@@ -28,8 +29,9 @@ const UserSchema = new Schema<IUserDocument>(
   {
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true, trim: true },
-    phoneNumber: { type: String, required: true },
     password: { type: String, required: true },
+    activationToken: { type: String, default: null },
+    forgotPasswordToken: { type: String, default: null },
     isActive: { type: Boolean, default: false },
     isDeleted: { type: Boolean, default: false },
     role: { type: String, enum: Object.values(Role), default: Role.PATIENT },
