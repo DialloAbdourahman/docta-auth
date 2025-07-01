@@ -1,12 +1,18 @@
 import express from "express";
-import expressAsyncHandler from "express-async-handler"; //TODO: Not sure it is needed anymore
+import expressAsyncHandler from "express-async-handler";
+import swaggerUi from "swagger-ui-express";
 import { errorHandler } from "./middleware/errorHandler";
 import authRouter from "./routers/authRouter";
+import { swaggerSpec } from "./swagger";
 
 const app = express();
 
 app.use(express.json());
 
+// Swagger documentation route
+app.use("/api/auth/v1/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+// API routes
 app.use("/api/auth/v1", expressAsyncHandler(authRouter));
 
 // app.all("*", () => {

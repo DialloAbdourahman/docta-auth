@@ -1,0 +1,139 @@
+openapi: 3.0.0
+info:
+  title: Docta Auth API
+  version: 1.0.0
+  description: Authentication service API documentation for Docta platform
+  contact:
+    name: API Support
+
+paths:
+  /:
+    post:
+      summary: Create a new patient account
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePatientDto"
+      responses:
+        "201":
+          description: Patient account created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+        "400":
+          description: Bad Request - Validation error or duplicate email
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                validationError:
+                  value:
+                    code: VALIDATION_ERROR
+                    message: Invalid email format
+                existsAlready:
+                  value:
+                    code: EXISTS_ALREADY
+                    message: User already exists
+                badRequest:
+                  value:
+                    code: BAD_REQUEST
+                    message: Invalid request data
+        "401":
+          description: Unauthorized - Authentication required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                unauthorized:
+                  value:
+                    code: UNAUTHORIZED
+                    message: Authentication required
+        "500":
+          description: Server error - Something went wrong
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                code: SOMETHING_WENT_WRONG
+                message: Internal server error
+
+components:
+  schemas:
+    CreatePatientDto:
+      type: object
+      required:
+        - name
+        - email
+        - password
+      properties:
+        name:
+          type: string
+          description: User full name
+          example: John Doe
+        email:
+          type: string
+          format: email
+          description: User email address
+          example: john@example.com
+        password:
+          type: string
+          format: password
+          description: User password (min 8 characters)
+          example: securePass123!
+
+    SuccessResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          enum: [SUCCESS]
+          description: Success status code
+        message:
+          type: string
+          description: Success message
+          example: User created successfully. Activation token logged on server.
+
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+            - VALIDATION_ERROR
+            - EXISTS_ALREADY
+            - BAD_REQUEST
+            - UNAUTHORIZED
+            - SOMETHING_WENT_WRONG
+          description: Error code
+        message:
+          type: string
+          description: Error message
+      examples:
+        validationError:
+          value:
+            code: VALIDATION_ERROR
+            message: Invalid email format
+        existsAlready:
+          value:
+            code: EXISTS_ALREADY
+            message: User already exists
+        badRequest:
+          value:
+            code: BAD_REQUEST
+            message: Invalid request data
+        unauthorized:
+          value:
+            code: UNAUTHORIZED
+            message: Authentication required
+        serverError:
+          value:
+            code: SOMETHING_WENT_WRONG
+            message: Internal server error
