@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import { IUserDocument, UserModel } from "../models/user";
 import { IPatientDocument, PatientModel } from "../models/patient";
 import { TokenUtils } from "../utils/token-utils";
-import { Role } from "../models/user";
+import { EnumUserRole } from "../models/user";
 import { CreatePatientDto } from "../dto/user";
 
 export class AuthService {
@@ -28,7 +28,7 @@ export class AuthService {
         name: userData.name,
         email: userData.email,
         password: userData.password,
-        role: Role.PATIENT,
+        role: EnumUserRole.PATIENT,
       });
       await user.save({ session });
 

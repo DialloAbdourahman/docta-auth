@@ -1,13 +1,13 @@
 import { Schema, model, Document, Model } from "mongoose";
 
-export enum Role {
+export enum EnumUserRole {
   PATIENT = "patient",
   DOCTOR = "doctor",
   ADMIN = "admin",
 }
 
 export interface IUser {
-  role: Role;
+  role: EnumUserRole;
   name: string;
   email: string;
   password: string;
@@ -34,7 +34,11 @@ const UserSchema = new Schema<IUserDocument>(
     forgotPasswordToken: { type: String, default: null },
     isActive: { type: Boolean, default: false },
     isDeleted: { type: Boolean, default: false },
-    role: { type: String, enum: Object.values(Role), default: Role.PATIENT },
+    role: {
+      type: String,
+      enum: Object.values(EnumUserRole),
+      default: EnumUserRole.PATIENT,
+    },
   },
   { timestamps: true }
 );
