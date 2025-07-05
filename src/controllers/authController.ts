@@ -4,6 +4,9 @@ import { OrchestrationResult } from "../utils/orchestration-result";
 import { EnumStatusCode } from "../enums/status-codes";
 import { CreatePatientDto } from "../dto/input/user";
 
+import { UserOutputDto } from "../dto/output/user";
+import { BadRequestError } from "../errors/BadRequestError";
+
 export class AuthController {
   private authService: AuthService;
 
@@ -18,8 +21,28 @@ export class AuthController {
 
     res.status(201).json(
       OrchestrationResult.item({
-        code: EnumStatusCode.SUCCESS,
+        code: EnumStatusCode.CREATED_SUCCESSFULLY,
         message: "User created successfully.",
+      })
+    );
+  };
+
+  public activateUser = async (req: Request, res: Response): Promise<void> => {
+    const token: string = String(req.query.token || req.params.token || "");
+
+    if (!token) {
+      throw new BadRequestError(
+        EnumStatusCode.VALIDATION_ERROR,
+        "Enter a valid activation token"
+      );
+    }
+
+    await this.authService.activateUser(token);
+
+    res.status(200).json(
+      OrchestrationResult.item({
+        code: EnumStatusCode.UPDATED_SUCCESSFULLY,
+        message: "Account activated successfully.",
       })
     );
   };

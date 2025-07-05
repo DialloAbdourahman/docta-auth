@@ -6,6 +6,8 @@ import { IPatientDocument, PatientModel } from "../models/patient";
 import { TokenUtils } from "../utils/token-utils";
 import { EnumUserRole } from "../models/user";
 import { CreatePatientDto } from "../dto/input/user";
+import { NotFoundError } from "../errors/NotFoundError";
+import { UnAuthorizedError } from "../errors/UnAuthorizedError";
 
 export class AuthService {
   public createUserAndPatient = async (
@@ -60,5 +62,33 @@ export class AuthService {
         "User creation failed"
       );
     }
+  };
+
+  public activateUser = async (token: string): Promise<IUserDocument> => {
+    const userId = TokenUtils.decodeActivationToken(token);
+    if (!userId) {
+      throw new UnAuthorizedError(
+        EnumStatusCode.UNAUTHORIZED,
+        "Invalid or expired activation token"
+      );
+    }
+
+    const user = await UserModel.findById(userId);
+    if (!user) {
+      throw new NotFoundError(
+        EnumStatusCode.NOT_FOUND,
+        "User not found for this token"
+      );
+    }
+
+    if (user.isActive) {
+      return user; // already active, idempotent
+    }
+
+    user.isActive = true;
+    user.activationToken = null;
+    await user.save();
+
+    return user;
   };
 }

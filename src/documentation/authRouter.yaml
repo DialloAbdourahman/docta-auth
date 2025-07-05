@@ -44,17 +44,6 @@ paths:
                   value:
                     code: BAD_REQUEST
                     message: Invalid request data
-        "401":
-          description: Unauthorized - Authentication required
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-              examples:
-                unauthorized:
-                  value:
-                    code: UNAUTHORIZED
-                    message: Authentication required
         "500":
           description: Server error - Something went wrong
           content:
@@ -64,6 +53,64 @@ paths:
               example:
                 code: SOMETHING_WENT_WRONG
                 message: Internal server error
+
+  /activate:
+    get:
+      summary: Activate patient account
+      tags:
+        - Authentication
+      parameters:
+        - in: query
+          name: token
+          schema:
+            type: string
+          required: true
+          description: Activation token received by the patient via email
+      responses:
+        "200":
+          description: Account activated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+              examples:
+                success:
+                  value:
+                    code: UPDATED_SUCCESSFULLY
+                    message: Account activated successfully
+        "400":
+          description: Bad Request - Missing token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                validationError:
+                  value:
+                    code: VALIDATION_ERROR
+                    message: Enter a valid activation token
+        "401":
+          description: Unauthorized - Invalid or expired token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                unauthorized:
+                  value:
+                    code: UNAUTHORIZED
+                    message: Invalid or expired activation token
+        "404":
+          description: Not Found - User not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                notFound:
+                  value:
+                    code: NOT_FOUND
+                    message: User not found for this token
 
 components:
   schemas:
@@ -94,12 +141,12 @@ components:
       properties:
         code:
           type: string
-          enum: [SUCCESS]
+          enum: [CREATED_SUCCESSFULLY, UPDATED_SUCCESSFULLY]
           description: Success status code
         message:
           type: string
           description: Success message
-          example: User created successfully. Activation token logged on server.
+          example: User created successfully. Activation token generated.
 
     ErrorResponse:
       type: object
@@ -112,6 +159,7 @@ components:
             - BAD_REQUEST
             - UNAUTHORIZED
             - SOMETHING_WENT_WRONG
+            - NOT_FOUND
           description: Error code
         message:
           type: string

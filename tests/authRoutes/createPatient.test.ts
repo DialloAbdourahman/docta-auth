@@ -2,7 +2,7 @@ import { api } from "../../src/testConfig";
 import { EnumStatusCode } from "../../src/enums/status-codes";
 import { EnumUserRole, IUserDocument, UserModel } from "../../src/models/user";
 import { IPatientDocument, PatientModel } from "../../src/models/patient";
-import { CreatePatientDto } from "../../src/dto/user";
+import { CreatePatientDto } from "../../src/dto/input/user";
 
 describe("Auth API Routes - Create Patient", () => {
   describe("POST /api/auth/v1", () => {
@@ -17,7 +17,7 @@ describe("Auth API Routes - Create Patient", () => {
 
       // Verify API response
       expect(res.status).toBe(201);
-      expect(res.body.code).toBe(EnumStatusCode.SUCCESS);
+      expect(res.body.code).toBe(EnumStatusCode.CREATED_SUCCESSFULLY);
 
       // Verify user creation in database
       const user: IUserDocument | null = await UserModel.findOne({

@@ -20,6 +20,9 @@ class AuthRouter {
       validationMiddleware(CreatePatientDto),
       this.authController.createUser
     );
+
+    // Route to activate account given activation token
+    this.router.get("/activate", this.authController.activateUser);
   }
 }
 
