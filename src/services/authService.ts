@@ -48,6 +48,7 @@ export class AuthService {
       await session.commitTransaction();
       session.endSession();
 
+      // Send activation email to the user
       console.log("Activation token generated:", activationToken);
       return { user, patient };
     } catch (error) {

@@ -19,8 +19,7 @@ export class AuthController {
     res.status(201).json(
       OrchestrationResult.item({
         code: EnumStatusCode.SUCCESS,
-        message:
-          "User created successfully. Activation token logged on server.",
+        message: "User created successfully.",
       })
     );
   };

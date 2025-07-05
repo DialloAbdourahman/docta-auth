@@ -1,4 +1,5 @@
 import { Schema, model, Document, Model } from "mongoose";
+const bcrypt = require("bcryptjs");
 
 export enum EnumUserRole {
   PATIENT = "patient",
@@ -19,7 +20,9 @@ export interface IUser {
   updatedAt: Date;
 }
 
-export interface IUserDocument extends IUser, Document {}
+export interface IUserDocument extends IUser, Document {
+  comparePassword(candidatePassword: string): Promise<boolean>;
+}
 
 export interface IUserModel extends Model<IUserDocument> {
   // toto(): void;
@@ -44,6 +47,25 @@ const UserSchema = new Schema<IUserDocument>(
 );
 
 // UserSchema.statics.toto = () => {};
+
+UserSchema.pre<IUserDocument>("save", async function (next) {
+  if (!this.isModified("password")) {
+    return next();
+  }
+  try {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    return next();
+  } catch (error) {
+    return next(error as Error);
+  }
+});
+
+UserSchema.methods.comparePassword = async function (
+  candidatePassword: string
+): Promise<boolean> {
+  return bcrypt.compare(candidatePassword, this.password);
+};
 
 export const UserModel = model<IUserDocument, IUserModel>("User", UserSchema);
 
