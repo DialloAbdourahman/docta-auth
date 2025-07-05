@@ -1,10 +1,26 @@
 import { Router } from "express";
 import { AuthController } from "../controllers/authController";
-import { UserValidator } from "../utils/validate-input-data";
+import { validationMiddleware } from "../middleware/validate-request";
+import { CreatePatientDto } from "../dto/input/user";
 
-const router = Router();
+class AuthRouter {
+  public readonly router: Router;
+  private authController: AuthController;
 
-// Route to create a new user
-router.post("/", UserValidator.validateSignup, AuthController.createUser);
+  constructor() {
+    this.router = Router();
+    this.authController = new AuthController();
+    this.initializeRoutes();
+  }
 
-export default router;
+  private initializeRoutes(): void {
+    // Route to create a new user (patient)
+    this.router.post(
+      "/",
+      validationMiddleware(CreatePatientDto),
+      this.authController.createUser
+    );
+  }
+}
+
+export default new AuthRouter().router;

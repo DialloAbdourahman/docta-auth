@@ -5,10 +5,10 @@ import { IUserDocument, UserModel } from "../models/user";
 import { IPatientDocument, PatientModel } from "../models/patient";
 import { TokenUtils } from "../utils/token-utils";
 import { EnumUserRole } from "../models/user";
-import { CreatePatientDto } from "../dto/user";
+import { CreatePatientDto } from "../dto/input/user";
 
 export class AuthService {
-  public static createUserAndPatient = async (
+  public createUserAndPatient = async (
     userData: CreatePatientDto
   ): Promise<{ user: IUserDocument; patient: IPatientDocument }> => {
     const existingUser = await UserModel.findOne({ email: userData.email });
