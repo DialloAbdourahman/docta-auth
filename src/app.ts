@@ -15,7 +15,7 @@ app.use("/api/auth/v1/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // API routes
 app.use("/api/auth/v1", expressAsyncHandler(authRouter));
-app.use("/api/admin/v1", expressAsyncHandler(adminRouter));
+app.use("/api/auth/v1/admin", expressAsyncHandler(adminRouter));
 
 // app.all("*", () => {
 //   throw new NotFoundError();

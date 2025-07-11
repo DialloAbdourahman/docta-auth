@@ -2,6 +2,7 @@ import { Router } from "express";
 import { AuthController } from "../controllers/authController";
 import { validationMiddleware } from "../middleware/validate-request";
 import { CreatePatientDto } from "../dto/input/patient";
+import { ActivateDoctorAccountDto } from "../dto/input/doctor";
 
 class AuthRouter {
   public readonly router: Router;
@@ -21,10 +22,17 @@ class AuthRouter {
       this.authController.createUser
     );
 
-    // Route to activate account given activation token
+    // Route to activate patient account given activation token
     this.router.get(
       "/activate/patient",
       this.authController.activatePatientUser
+    );
+
+    // Route to activate doctor account with token and password
+    this.router.post(
+      "/activate/doctor",
+      validationMiddleware(ActivateDoctorAccountDto),
+      this.authController.activateDoctorUser
     );
   }
 }

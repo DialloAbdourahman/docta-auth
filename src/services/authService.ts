@@ -3,6 +3,7 @@ import { BadRequestError } from "../errors/BadRequestError";
 import mongoose from "mongoose";
 import { IUserDocument, UserModel } from "../models/user";
 import { IPatientDocument, PatientModel } from "../models/patient";
+import { DoctorModel } from "../models/doctor";
 import { TokenUtils } from "../utils/token-utils";
 import { EnumUserRole } from "../models/user";
 import { CreatePatientDto } from "../dto/input/patient";
@@ -99,5 +100,74 @@ export class AuthService {
     await user.save();
 
     return user;
+  };
+
+  public activateDoctorUser = async (
+    token: string,
+    password: string
+  ): Promise<IUserDocument> => {
+    const userId = TokenUtils.decodeActivationToken(token);
+    if (!userId) {
+      throw new UnAuthorizedError(
+        EnumStatusCode.UNAUTHORIZED,
+        "Invalid or expired activation token"
+      );
+    }
+
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    try {
+      // 1. Find and update the user
+      const user = await UserModel.findById(userId).session(session);
+      if (!user) {
+        throw new NotFoundError(
+          EnumStatusCode.NOT_FOUND,
+          "User not found for this token"
+        );
+      }
+
+      if (user.role !== EnumUserRole.DOCTOR) {
+        throw new BadRequestError(
+          EnumStatusCode.NOT_ALLOWED,
+          "Only doctors can use this route"
+        );
+      }
+
+      if (user.isActive) {
+        await session.commitTransaction();
+        session.endSession();
+        return user; // already active, idempotent
+      }
+
+      // 2. Update the user with new password
+      user.password = password;
+      user.isActive = true;
+      user.activationToken = null;
+      await user.save({ session });
+
+      // 3. Update the doctor record
+      const doctor = await DoctorModel.findOne({ user: user._id }).session(
+        session
+      );
+
+      if (!doctor) {
+        throw new NotFoundError(
+          EnumStatusCode.DOCTOR_NOT_FOUND,
+          "Doctor record not found for this user"
+        );
+      }
+
+      doctor.isActive = true;
+      await doctor.save({ session });
+
+      await session.commitTransaction();
+      session.endSession();
+      return user;
+    } catch (error) {
+      await session.abortTransaction();
+      session.endSession();
+      throw error;
+    }
   };
 }

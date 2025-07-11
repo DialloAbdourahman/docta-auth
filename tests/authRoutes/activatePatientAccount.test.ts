@@ -1,11 +1,11 @@
 import { api } from "../../src/testConfig";
 import { EnumStatusCode } from "../../src/enums/status-codes";
 import { IUserDocument, UserModel } from "../../src/models/user";
-import { CreatePatientDto } from "../../src/dto/input/user";
+import { CreatePatientDto } from "../../src/dto/input/patient";
 
-describe("Auth API Routes - Activate Account", () => {
-  describe("GET /api/auth/v1/activate", () => {
-    it("should activate a user account successfully with a valid token", async () => {
+describe("Auth API Routes - Activate patient's account", () => {
+  describe("GET /api/auth/v1/activate/patient", () => {
+    it("should activate a patient's account successfully with a valid token", async () => {
       const userData: CreatePatientDto = {
         name: "Jane Patient",
         email: "janepatient@example.com",
@@ -24,7 +24,9 @@ describe("Auth API Routes - Activate Account", () => {
       expect(token).toBeTruthy();
 
       // Call activation endpoint
-      const res = await api.get("/api/auth/v1/activate").query({ token });
+      const res = await api
+        .get("/api/auth/v1/activate/patient")
+        .query({ token });
 
       expect(res.status).toBe(200);
       expect(res.body.code).toBe(EnumStatusCode.UPDATED_SUCCESSFULLY);
@@ -36,14 +38,14 @@ describe("Auth API Routes - Activate Account", () => {
     });
 
     it("should return 400 when token is missing", async () => {
-      const res = await api.get("/api/auth/v1/activate");
+      const res = await api.get("/api/auth/v1/activate/patient");
       expect(res.status).toBe(400);
       expect(res.body.code).toBe(EnumStatusCode.VALIDATION_ERROR);
     });
 
     it("should return 401 for an invalid token", async () => {
       const res = await api
-        .get("/api/auth/v1/activate")
+        .get("/api/auth/v1/activate/patient")
         .query({ token: "invalidtoken" });
 
       expect(res.status).toBe(401);

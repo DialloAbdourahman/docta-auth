@@ -2,7 +2,7 @@ import { api } from "../../src/testConfig";
 import { EnumStatusCode } from "../../src/enums/status-codes";
 import { EnumUserRole, IUserDocument, UserModel } from "../../src/models/user";
 import { IPatientDocument, PatientModel } from "../../src/models/patient";
-import { CreatePatientDto } from "../../src/dto/input/user";
+import { CreatePatientDto } from "../../src/dto/input/patient";
 
 describe("Auth API Routes - Create Patient", () => {
   describe("POST /api/auth/v1", () => {
