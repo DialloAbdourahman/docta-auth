@@ -5,7 +5,7 @@ import { IUserDocument, UserModel } from "../models/user";
 import { IPatientDocument, PatientModel } from "../models/patient";
 import { TokenUtils } from "../utils/token-utils";
 import { EnumUserRole } from "../models/user";
-import { CreatePatientDto } from "../dto/input/user";
+import { CreatePatientDto } from "../dto/input/patient";
 import { NotFoundError } from "../errors/NotFoundError";
 import { UnAuthorizedError } from "../errors/UnAuthorizedError";
 
@@ -64,7 +64,9 @@ export class AuthService {
     }
   };
 
-  public activateUser = async (token: string): Promise<IUserDocument> => {
+  public activatePatientUser = async (
+    token: string
+  ): Promise<IUserDocument> => {
     const userId = TokenUtils.decodeActivationToken(token);
     if (!userId) {
       throw new UnAuthorizedError(
@@ -78,6 +80,13 @@ export class AuthService {
       throw new NotFoundError(
         EnumStatusCode.NOT_FOUND,
         "User not found for this token"
+      );
+    }
+
+    if (user.role !== EnumUserRole.PATIENT) {
+      throw new BadRequestError(
+        EnumStatusCode.NOT_ALLOWED,
+        "Only patients can use this route"
       );
     }
 

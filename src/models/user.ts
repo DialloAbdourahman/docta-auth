@@ -11,7 +11,7 @@ export interface IUser {
   role: EnumUserRole;
   name: string;
   email: string;
-  password: string;
+  password?: string;
   activationToken?: string | null;
   forgotPasswordToken?: string | null;
   isActive: boolean;
@@ -32,7 +32,7 @@ const UserSchema = new Schema<IUserDocument>(
   {
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true, trim: true },
-    password: { type: String, required: true },
+    password: { type: String, required: false, default: null },
     activationToken: { type: String, default: null },
     forgotPasswordToken: { type: String, default: null },
     isActive: { type: Boolean, default: false },

@@ -2,9 +2,8 @@ import { Request, Response } from "express";
 import { AuthService } from "../services/authService";
 import { OrchestrationResult } from "../utils/orchestration-result";
 import { EnumStatusCode } from "../enums/status-codes";
-import { CreatePatientDto } from "../dto/input/user";
+import { CreatePatientDto } from "../dto/input/patient";
 
-import { UserOutputDto } from "../dto/output/user";
 import { BadRequestError } from "../errors/BadRequestError";
 
 export class AuthController {
@@ -27,7 +26,10 @@ export class AuthController {
     );
   };
 
-  public activateUser = async (req: Request, res: Response): Promise<void> => {
+  public activatePatientUser = async (
+    req: Request,
+    res: Response
+  ): Promise<void> => {
     const token: string = String(req.query.token || req.params.token || "");
 
     if (!token) {
@@ -37,7 +39,7 @@ export class AuthController {
       );
     }
 
-    await this.authService.activateUser(token);
+    await this.authService.activatePatientUser(token);
 
     res.status(200).json(
       OrchestrationResult.item({

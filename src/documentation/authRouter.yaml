@@ -54,7 +54,7 @@ paths:
                 code: SOMETHING_WENT_WRONG
                 message: Internal server error
 
-  /activate:
+  /activate/patient:
     get:
       summary: Activate patient account
       tags:
