@@ -3,14 +3,19 @@ import { EnumStatusCode } from "../../src/enums/status-codes";
 import { EnumUserRole, IUserDocument, UserModel } from "../../src/models/user";
 import { IDoctorDocument, DoctorModel } from "../../src/models/doctor";
 import { CreateDoctorDto } from "../../src/dto/input/doctor";
+import { SpecialtyModel } from "../../src/models/specialty";
 
 describe("Auth API Routes - Create Doctor", () => {
   describe("POST /api/auth/v1/admin/doctors", () => {
     it("should create a new doctor successfully with proper data", async () => {
+      const specialty = await SpecialtyModel.create({
+        name: "Cardiology",
+      });
+
       const doctorData: CreateDoctorDto = {
         name: "Dr. Jane Smith",
         email: "jane.smith@example.com",
-        specialtyId: "507f1f77bcf86cd799439011", // Sample MongoDB ID
+        specialtyId: specialty.id.toString(), // Sample MongoDB ID
         biography: "Experienced cardiologist with 10+ years of practice.",
       };
 
@@ -78,10 +83,14 @@ describe("Auth API Routes - Create Doctor", () => {
     });
 
     it("should not allow duplicate email addresses", async () => {
+      const specialty = await SpecialtyModel.create({
+        name: "Cardiology",
+      });
+
       const doctorData: CreateDoctorDto = {
         name: "Dr. John Doe",
         email: "john.doe@example.com",
-        specialtyId: "507f1f77bcf86cd799439011",
+        specialtyId: specialty.id.toString(),
       };
 
       // First request should succeed
