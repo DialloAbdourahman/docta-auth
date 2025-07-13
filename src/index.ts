@@ -1,6 +1,15 @@
 import app from "./app";
 import config from "./config";
 import mongoose from "mongoose";
+import { LoggedInUserTokenData } from "./interfaces/LoggedInUserToken";
+
+declare global {
+  namespace Express {
+    interface Request {
+      currentUser?: LoggedInUserTokenData;
+    }
+  }
+}
 
 const start = async () => {
   try {

@@ -9,6 +9,8 @@ import { EnumUserRole } from "../models/user";
 import { CreatePatientDto } from "../dto/input/patient";
 import { NotFoundError } from "../errors/NotFoundError";
 import { UnAuthorizedError } from "../errors/UnAuthorizedError";
+import { LoggedInUserOutputDto, UserOutputDto } from "../dto/output/user";
+import { LoggedInUserTokenData } from "../interfaces/LoggedInUserToken";
 
 export class AuthService {
   public createUserAndPatient = async (
@@ -169,5 +171,61 @@ export class AuthService {
       session.endSession();
       throw error;
     }
+  };
+
+  public login = async (
+    email: string,
+    password: string
+  ): Promise<LoggedInUserOutputDto> => {
+    // 1. Find user by email
+    console.log(email, password);
+    const user: IUserDocument | null = await UserModel.findOne({ email });
+    if (!user) {
+      throw new UnAuthorizedError(
+        EnumStatusCode.UNAUTHORIZED,
+        "Invalid email or password"
+      );
+    }
+
+    // 2. Check if account is active
+    if (!user.isActive) {
+      throw new UnAuthorizedError(
+        EnumStatusCode.ACCOUNT_DEACTIVATED,
+        "Please activate your account before logging in"
+      );
+    }
+
+    // 2. Check if account is active
+    if (user.isDeleted) {
+      throw new UnAuthorizedError(
+        EnumStatusCode.ACCOUNT_DELETED,
+        "Your account has been deleted"
+      );
+    }
+
+    // 4. Check if password matches
+    const isMatch = await user.comparePassword(password);
+    if (!isMatch) {
+      throw new UnAuthorizedError(
+        EnumStatusCode.UNAUTHORIZED,
+        "Invalid email or password"
+      );
+    }
+
+    // 5. Generate tokens and store refresh token in db.
+    const tokenData: LoggedInUserTokenData = {
+      id: user.id.toString(),
+      email: user.email,
+      role: user.role,
+    };
+
+    const accessToken = TokenUtils.createAccessToken(tokenData);
+    const refreshToken = TokenUtils.createRefreshToken(tokenData);
+
+    user.token = refreshToken;
+
+    // 6. Return user and tokens
+    const userDto = new UserOutputDto(user);
+    return new LoggedInUserOutputDto(userDto, accessToken, refreshToken);
   };
 }

@@ -14,6 +14,7 @@ export interface IUser {
   password?: string;
   activationToken?: string | null;
   forgotPasswordToken?: string | null;
+  token?: string | null;
   isActive: boolean;
   isDeleted: boolean;
   createdAt: Date;
@@ -35,6 +36,7 @@ const UserSchema = new Schema<IUserDocument>(
     password: { type: String, required: false, default: null },
     activationToken: { type: String, default: null },
     forgotPasswordToken: { type: String, default: null },
+    token: { type: String, default: null },
     isActive: { type: Boolean, default: false },
     isDeleted: { type: Boolean, default: false },
     role: {

@@ -3,6 +3,7 @@ import { AuthController } from "../controllers/authController";
 import { validationMiddleware } from "../middleware/validate-request";
 import { CreatePatientDto } from "../dto/input/patient";
 import { ActivateDoctorAccountDto } from "../dto/input/doctor";
+import { LoginDto } from "../dto/input/login";
 
 class AuthRouter {
   public readonly router: Router;
@@ -35,7 +36,13 @@ class AuthRouter {
       this.authController.activateDoctorUser
     );
 
-    // Login route (store in the token: user id (required), role (required), email (required), doctorId (required if role is doctor), patientId (required if role is patient))
+    // Login route
+    this.router.post(
+      "/login",
+      validationMiddleware(LoginDto),
+      this.authController.login
+    );
+
     // Forgot password route
     // Reset password route
     // Logout route
