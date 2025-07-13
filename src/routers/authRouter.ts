@@ -34,6 +34,14 @@ class AuthRouter {
       validationMiddleware(ActivateDoctorAccountDto),
       this.authController.activateDoctorUser
     );
+
+    // Login route (store in the token: user id (required), role (required), email (required), doctorId (required if role is doctor), patientId (required if role is patient))
+    // Forgot password route
+    // Reset password route
+    // Logout route
+    // Refresh token route
+    // Update password route
+    // Update account route (Just the name maybe which will automatically update the user's name in the doctor and patient collections)
   }
 }
 

@@ -1,5 +1,6 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
 import config from "../config";
+import { LoggedInUserTokenData } from "../interfaces/LoggedInUserToken";
 
 export class TokenUtils {
   static createActivationToken(userId: string): string {
@@ -17,5 +18,17 @@ export class TokenUtils {
     } catch {
       return null;
     }
+  }
+
+  static createAccessToken(payload: LoggedInUserTokenData): string {
+    return jwt.sign(payload, config.accessTokenSecret, {
+      expiresIn: config.accessTokenExpiry,
+    });
+  }
+
+  static createRefreshToken(payload: LoggedInUserTokenData): string {
+    return jwt.sign(payload, config.refreshTokenSecret, {
+      expiresIn: config.refreshTokenExpiry,
+    });
   }
 }

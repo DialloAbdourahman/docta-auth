@@ -20,6 +20,11 @@ class AdminRouter {
       this.controller.createDoctor
     );
   }
+
+  // Deactive doctors.
+  // Deactivate patients.
+  // Delete doctors.
+  // Delete patients.
 }
 
 export default new AdminRouter().router;
