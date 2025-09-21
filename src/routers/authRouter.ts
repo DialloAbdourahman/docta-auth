@@ -16,7 +16,7 @@ class AuthRouter {
   }
 
   private initializeRoutes(): void {
-    // Route to create a new user (patient)
+    // Create patient route
     this.router.post(
       "/",
       validationMiddleware(CreatePatientDto),

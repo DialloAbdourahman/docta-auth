@@ -1,11 +1,6 @@
 import { Schema, model, Document, Model } from "mongoose";
+import { EnumUserRole } from "../enums/user-role";
 const bcrypt = require("bcryptjs");
-
-export enum EnumUserRole {
-  PATIENT = "patient",
-  DOCTOR = "doctor",
-  ADMIN = "admin",
-}
 
 export interface IUser {
   role: EnumUserRole;

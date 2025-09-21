@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { EnumUserRole, IUserDocument, UserModel } from "../models/user";
+import { IUserDocument, UserModel } from "../models/user";
 import { DoctorModel, IDoctorDocument } from "../models/doctor";
 import { SpecialtyModel } from "../models/specialty";
 import { TokenUtils } from "../utils/token-utils";
@@ -7,6 +7,7 @@ import { BadRequestError } from "../errors/BadRequestError";
 import { EnumStatusCode } from "../enums/status-codes";
 import { CreateDoctorDto } from "../dto/input/doctor";
 import { NotFoundError } from "../errors/NotFoundError";
+import { EnumUserRole } from "../enums/user-role";
 
 export class AdminService {
   public createDoctorProfile = async (
