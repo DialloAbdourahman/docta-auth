@@ -4,10 +4,10 @@ export class UserOutputDto {
   name: string;
   email: string;
   role: string;
-  isActive?: boolean;
-  isDeleted?: boolean;
-  createdAt?: Date;
-  updatedAt?: Date;
+  isActive: boolean;
+  isDeleted: boolean;
+  createdAt: number;
+  updatedAt: number;
 
   constructor(user: IUserDocument, isAdmin: boolean = false) {
     this.id = user.id.toString();
@@ -15,10 +15,10 @@ export class UserOutputDto {
     this.email = user.email;
     this.role = user.role;
 
-    this.isActive = isAdmin ? user.isActive : undefined;
-    this.isDeleted = isAdmin ? user.isDeleted : undefined;
-    this.createdAt = isAdmin ? user.createdAt : undefined;
-    this.updatedAt = isAdmin ? user.updatedAt : undefined;
+    this.isActive = user.isActive;
+    this.isDeleted = user.isDeleted;
+    this.createdAt = user.createdAt;
+    this.updatedAt = user.updatedAt;
   }
 }
 

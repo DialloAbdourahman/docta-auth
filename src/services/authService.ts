@@ -178,7 +178,6 @@ export class AuthService {
     password: string
   ): Promise<LoggedInUserOutputDto> => {
     // 1. Find user by email
-    console.log(email, password);
     const user: IUserDocument | null = await UserModel.findOne({ email });
     if (!user) {
       throw new UnAuthorizedError(

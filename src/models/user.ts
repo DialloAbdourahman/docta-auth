@@ -1,8 +1,9 @@
 import { Schema, model, Document, Model } from "mongoose";
 import { EnumUserRole } from "../enums/user-role";
 const bcrypt = require("bcryptjs");
+import { IBaseModel, BaseSchemaFields, BaseSchemaPlugin } from "./base";
 
-export interface IUser {
+export interface IUser extends IBaseModel {
   role: EnumUserRole;
   name: string;
   email: string;
@@ -11,9 +12,6 @@ export interface IUser {
   forgotPasswordToken?: string | null;
   token?: string | null;
   isActive: boolean;
-  isDeleted: boolean;
-  createdAt: Date;
-  updatedAt: Date;
 }
 
 export interface IUserDocument extends IUser, Document {
@@ -24,26 +22,23 @@ export interface IUserModel extends Model<IUserDocument> {
   // toto(): void;
 }
 
-const UserSchema = new Schema<IUserDocument>(
-  {
-    name: { type: String, required: true },
-    email: { type: String, required: true, unique: true, trim: true },
-    password: { type: String, required: false, default: null },
-    activationToken: { type: String, default: null },
-    forgotPasswordToken: { type: String, default: null },
-    token: { type: String, default: null },
-    isActive: { type: Boolean, default: false },
-    isDeleted: { type: Boolean, default: false },
-    role: {
-      type: String,
-      enum: Object.values(EnumUserRole),
-      default: EnumUserRole.PATIENT,
-    },
+const UserSchema = new Schema<IUserDocument>({
+  ...BaseSchemaFields,
+  name: { type: String, required: true },
+  email: { type: String, required: true, unique: true, trim: true },
+  password: { type: String, required: false, default: null },
+  activationToken: { type: String, default: null },
+  forgotPasswordToken: { type: String, default: null },
+  token: { type: String, default: null },
+  isActive: { type: Boolean, default: false },
+  role: {
+    type: String,
+    enum: Object.values(EnumUserRole),
+    default: EnumUserRole.PATIENT,
   },
-  { timestamps: true }
-);
+});
 
-// UserSchema.statics.toto = () => {};
+UserSchema.plugin(BaseSchemaPlugin);
 
 UserSchema.pre<IUserDocument>("save", async function (next) {
   if (!this.isModified("password")) {
