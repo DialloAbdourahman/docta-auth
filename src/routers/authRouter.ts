@@ -48,7 +48,7 @@ class AuthRouter {
     // Logout route
     // Refresh token route
     // Update password route
-    // Update account route (Just the name maybe which will automatically update the user's name in the doctor and patient collections)
+    // Update account route (Just the name)
   }
 }
 

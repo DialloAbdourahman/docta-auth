@@ -10,8 +10,10 @@ export interface IDoctor extends IBaseModel {
   user: IUserDocument;
   specialty: ISpecialtyDocument;
   biography: string;
-  consultation_fee: number;
-  is_verified: boolean;
+  consultationFee: number;
+  isVerified: boolean;
+  isVisible: boolean;
+  isDeactivatedByAdmin: boolean;
 }
 
 export interface IDoctorDocument extends IDoctor, Document {}
@@ -35,8 +37,10 @@ const DoctorSchema = new Schema<IDoctorDocument>({
   biography: { type: String, required: false },
   slug: { type: String, required: true, unique: true, trim: true },
   isActive: { type: Boolean, default: false },
-  consultation_fee: { type: Number, required: false },
-  is_verified: { type: Boolean, default: false },
+  consultationFee: { type: Number, required: false },
+  isVerified: { type: Boolean, default: false },
+  isVisible: { type: Boolean, default: true },
+  isDeactivatedByAdmin: { type: Boolean, default: false },
 });
 
 const createSlug = (text: string): string =>

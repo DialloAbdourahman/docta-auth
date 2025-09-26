@@ -22,7 +22,6 @@ class AdminRouter {
   }
 
   // Deactive doctors.
-  // Deactivate patients.
   // Delete doctors.
   // Delete patients.
 }

@@ -30,7 +30,7 @@ export class CreateDoctorDto {
   @IsOptional()
   @IsNumber()
   @Min(0)
-  consultation_fee?: number;
+  consultationFee?: number;
 }
 
 export class ActivateDoctorAccountDto {
