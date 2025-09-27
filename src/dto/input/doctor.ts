@@ -8,6 +8,7 @@ import {
   IsOptional,
   IsNumber,
   Min,
+  IsNotEmpty,
 } from "class-validator";
 
 export class CreateDoctorDto {
@@ -35,6 +36,7 @@ export class CreateDoctorDto {
 
 export class ActivateDoctorAccountDto {
   @IsString()
+  @IsNotEmpty({ message: "Activation token token is required" })
   token: string;
 
   @IsString()

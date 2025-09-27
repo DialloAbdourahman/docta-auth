@@ -31,4 +31,20 @@ export class TokenUtils {
       expiresIn: config.refreshTokenExpiry,
     });
   }
+
+  static verifyRefreshToken(token: string): LoggedInUserTokenData | null {
+    try {
+      const decoded = jwt.verify(
+        token,
+        config.refreshTokenSecret
+      ) as JwtPayload;
+      return {
+        id: decoded.id,
+        email: decoded.email,
+        role: decoded.role,
+      };
+    } catch {
+      return null;
+    }
+  }
 }

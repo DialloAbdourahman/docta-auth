@@ -228,4 +228,68 @@ export class AuthService {
     const userDto = new UserOutputDto(user);
     return new LoggedInUserOutputDto(userDto, accessToken, refreshToken);
   };
+
+  public refreshToken = async (
+    refreshToken: string
+  ): Promise<LoggedInUserOutputDto> => {
+    // 1. Verify the refresh token
+    const tokenData = TokenUtils.verifyRefreshToken(refreshToken);
+    if (!tokenData) {
+      throw new UnAuthorizedError(
+        EnumStatusCode.UNAUTHORIZED,
+        "Invalid or expired refresh token"
+      );
+    }
+
+    // 2. Find user by ID from token
+    const user: IUserDocument | null = await UserModel.findById(tokenData.id);
+    if (!user) {
+      throw new UnAuthorizedError(
+        EnumStatusCode.UNAUTHORIZED,
+        "User not found"
+      );
+    }
+
+    // 3. Check if account is active
+    if (!user.isActive) {
+      throw new UnAuthorizedError(
+        EnumStatusCode.ACCOUNT_DEACTIVATED,
+        "Account is deactivated"
+      );
+    }
+
+    // 4. Check if account is deleted
+    if (user.isDeleted) {
+      throw new UnAuthorizedError(
+        EnumStatusCode.ACCOUNT_DELETED,
+        "Account has been deleted"
+      );
+    }
+
+    // 5. Verify that the incoming token matches the token stored in the user
+    if (user.token !== refreshToken) {
+      throw new UnAuthorizedError(
+        EnumStatusCode.UNAUTHORIZED,
+        "Refresh token does not match stored token"
+      );
+    }
+
+    // 6. Generate new tokens (token rotation)
+    const newTokenData: LoggedInUserTokenData = {
+      id: user.id.toString(),
+      email: user.email,
+      role: user.role,
+    };
+
+    const newAccessToken = TokenUtils.createAccessToken(newTokenData);
+    const newRefreshToken = TokenUtils.createRefreshToken(newTokenData);
+
+    // 7. Store new refresh token in database
+    user.token = newRefreshToken;
+    await user.save();
+
+    // 8. Return user and new tokens
+    const userDto = new UserOutputDto(user);
+    return new LoggedInUserOutputDto(userDto, newAccessToken, newRefreshToken);
+  };
 }

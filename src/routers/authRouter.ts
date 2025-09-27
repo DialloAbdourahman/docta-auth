@@ -3,7 +3,7 @@ import { AuthController } from "../controllers/authController";
 import { validationMiddleware } from "../middleware/validate-request";
 import { CreatePatientDto } from "../dto/input/patient";
 import { ActivateDoctorAccountDto } from "../dto/input/doctor";
-import { LoginDto } from "../dto/input/login";
+import { LoginDto, RefreshTokenDto } from "../dto/input/user";
 
 class AuthRouter {
   public readonly router: Router;
@@ -43,9 +43,15 @@ class AuthRouter {
       this.authController.login
     );
 
+    // Refresh token route
+    this.router.post(
+      "/refresh-token",
+      validationMiddleware(RefreshTokenDto),
+      this.authController.refreshToken
+    );
+
     // Forgot password route
     // Reset password route
-    // Refresh token route
 
     // Require auth routes ///////////
     // Logout route
