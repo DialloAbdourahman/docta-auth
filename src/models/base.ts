@@ -14,7 +14,7 @@ export interface IBaseModel {
 // Base Schema
 export const BaseSchemaFields: SchemaDefinition = {
   isDeleted: { type: Boolean, default: false },
-  createdAt: { type: Number, required: true },
+  createdAt: { type: Number, required: true, default: Date.now() },
   updatedAt: { type: Number, required: true },
   deletedAt: { type: Number, required: false },
   createdBy: {
@@ -44,7 +44,6 @@ export function BaseSchemaPlugin(schema: Schema) {
 
   schema.pre("save", function () {
     this.updatedAt = Date.now();
-    this.createdAt = Date.now();
   });
 
   schema.pre("findOneAndUpdate", function () {

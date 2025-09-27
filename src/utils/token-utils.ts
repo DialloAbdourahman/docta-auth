@@ -51,4 +51,18 @@ export class TokenUtils {
   static createForgotPasswordToken(userId: string): string {
     return jwt.sign({ userId }, config.forgotPasswordTokenSecret);
   }
+
+  static decodeForgotPasswordToken(token: string): string | null {
+    try {
+      const decoded = jwt.verify(token, config.forgotPasswordTokenSecret) as
+        | JwtPayload
+        | string;
+      if (typeof decoded === "string") {
+        return null;
+      }
+      return typeof decoded.userId === "string" ? decoded.userId : null;
+    } catch {
+      return null;
+    }
+  }
 }

@@ -7,6 +7,7 @@ import {
   LoginDto,
   RefreshTokenDto,
   ForgotPasswordDto,
+  ResetPasswordDto,
 } from "../dto/input/user";
 
 class AuthRouter {
@@ -61,8 +62,13 @@ class AuthRouter {
       this.authController.forgotPassword
     );
     // Reset password route
+    this.router.post(
+      "/reset-password",
+      validationMiddleware(ResetPasswordDto),
+      this.authController.resetPassword
+    );
 
-    // Require auth routes ///////////
+    // Add a require auth and vefify roles middleware and make it in such a way that it should not call the db as it will be used in other services. Make sure to test well the case when a user's token has expired (require auth.)
     // Logout route
     // Update password route
     // Update account route (Just the name)

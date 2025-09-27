@@ -8,9 +8,10 @@ import {
   LoginDto,
   RefreshTokenDto,
   ForgotPasswordDto,
+  ResetPasswordDto,
 } from "../dto/input/user";
-import { BadRequestError } from "../errors/BadRequestError";
 import { LoggedInUserOutputDto } from "../dto/output/user";
+import { BadRequestError } from "../errors/BadRequestError";
 
 export class AuthController {
   private authService: AuthService;
@@ -115,6 +116,19 @@ export class AuthController {
       OrchestrationResult.item({
         code: EnumStatusCode.CREATED_SUCCESSFULLY,
         message: "Forgot password token created successfully.",
+      })
+    );
+  };
+
+  public resetPassword = async (req: Request, res: Response): Promise<void> => {
+    const { token, password } = req.body as ResetPasswordDto;
+
+    await this.authService.resetPassword(token, password);
+
+    res.status(200).json(
+      OrchestrationResult.item({
+        code: EnumStatusCode.UPDATED_SUCCESSFULLY,
+        message: "Password reset successfully.",
       })
     );
   };

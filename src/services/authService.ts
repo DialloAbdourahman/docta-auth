@@ -324,4 +324,51 @@ export class AuthService {
     // 6. TODO: send token via email
     console.log("Forgot password token generated:", token);
   };
+
+  public resetPassword = async (
+    token: string,
+    password: string
+  ): Promise<void> => {
+    // 1. Decode forgot password token
+    const userId = TokenUtils.decodeForgotPasswordToken(token);
+    if (!userId) {
+      throw new UnAuthorizedError(
+        EnumStatusCode.UNAUTHORIZED,
+        "Invalid or expired reset token"
+      );
+    }
+
+    // 2. Find user by id
+    const user: IUserDocument | null = await UserModel.findById(userId);
+    if (!user) {
+      throw new NotFoundError(EnumStatusCode.NOT_FOUND, "User not found");
+    }
+
+    // 3. Check user status
+    if (user.isDeleted) {
+      throw new UnAuthorizedError(
+        EnumStatusCode.ACCOUNT_DELETED,
+        "Your account has been deleted"
+      );
+    }
+    if (!user.isActive) {
+      throw new UnAuthorizedError(
+        EnumStatusCode.ACCOUNT_DEACTIVATED,
+        "Account is deactivated"
+      );
+    }
+
+    // 4. Ensure token matches the one stored in DB
+    if (!user.forgotPasswordToken || user.forgotPasswordToken !== token) {
+      throw new UnAuthorizedError(
+        EnumStatusCode.UNAUTHORIZED,
+        "Reset token does not match stored token"
+      );
+    }
+
+    // 5. Update password and clear forgot password token
+    user.password = password;
+    user.forgotPasswordToken = null;
+    await user.save();
+  };
 }
