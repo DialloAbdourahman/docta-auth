@@ -9,6 +9,7 @@ interface Config {
   activationTokenSecret: string;
   accessTokenSecret: string;
   refreshTokenSecret: string;
+  forgotPasswordTokenSecret: string;
   accessTokenExpiry: number;
   refreshTokenExpiry: number;
 }
@@ -20,6 +21,7 @@ const config: Config = {
   activationTokenSecret: String(process.env.ACTIVATION_TOKEN_SECRET),
   accessTokenSecret: String(process.env.ACCESS_TOKEN_SECRET),
   refreshTokenSecret: String(process.env.REFRESH_TOKEN_SECRET),
+  forgotPasswordTokenSecret: String(process.env.FORGOT_PASSWORD_TOKEN_SECRET),
   accessTokenExpiry: Number(process.env.ACCESS_TOKEN_EXPIRY),
   refreshTokenExpiry: Number(process.env.REFRESH_TOKEN_EXPIRY),
 };

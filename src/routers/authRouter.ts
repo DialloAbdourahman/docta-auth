@@ -3,7 +3,11 @@ import { AuthController } from "../controllers/authController";
 import { validationMiddleware } from "../middleware/validate-request";
 import { CreatePatientDto } from "../dto/input/patient";
 import { ActivateDoctorAccountDto } from "../dto/input/doctor";
-import { LoginDto, RefreshTokenDto } from "../dto/input/user";
+import {
+  LoginDto,
+  RefreshTokenDto,
+  ForgotPasswordDto,
+} from "../dto/input/user";
 
 class AuthRouter {
   public readonly router: Router;
@@ -51,6 +55,11 @@ class AuthRouter {
     );
 
     // Forgot password route
+    this.router.post(
+      "/forgot-password",
+      validationMiddleware(ForgotPasswordDto),
+      this.authController.forgotPassword
+    );
     // Reset password route
 
     // Require auth routes ///////////

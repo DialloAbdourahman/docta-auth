@@ -15,3 +15,9 @@ export class RefreshTokenDto {
   @IsNotEmpty({ message: "Refresh token is required" })
   refreshToken: string;
 }
+
+export class ForgotPasswordDto {
+  @IsEmail({}, { message: "Please enter a valid email address" })
+  @IsNotEmpty({ message: "Email is required" })
+  email: string;
+}

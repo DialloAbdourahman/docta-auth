@@ -4,7 +4,11 @@ import { OrchestrationResult } from "../utils/orchestration-result";
 import { EnumStatusCode } from "../enums/status-codes";
 import { CreatePatientDto } from "../dto/input/patient";
 import { ActivateDoctorAccountDto } from "../dto/input/doctor";
-import { LoginDto, RefreshTokenDto } from "../dto/input/user";
+import {
+  LoginDto,
+  RefreshTokenDto,
+  ForgotPasswordDto,
+} from "../dto/input/user";
 import { BadRequestError } from "../errors/BadRequestError";
 import { LoggedInUserOutputDto } from "../dto/output/user";
 
@@ -95,6 +99,22 @@ export class AuthController {
         code: EnumStatusCode.TOKEN_REFRESHED,
         message: "Token refreshed successfully",
         data: result,
+      })
+    );
+  };
+
+  public forgotPassword = async (
+    req: Request,
+    res: Response
+  ): Promise<void> => {
+    const { email } = req.body as ForgotPasswordDto;
+
+    await this.authService.forgotPassword(email);
+
+    res.status(201).json(
+      OrchestrationResult.item({
+        code: EnumStatusCode.CREATED_SUCCESSFULLY,
+        message: "Forgot password token created successfully.",
       })
     );
   };

@@ -292,4 +292,36 @@ export class AuthService {
     const userDto = new UserOutputDto(user);
     return new LoggedInUserOutputDto(userDto, newAccessToken, newRefreshToken);
   };
+
+  public forgotPassword = async (email: string): Promise<void> => {
+    // 1. Find user by email
+    const user: IUserDocument | null = await UserModel.findOne({ email });
+    if (!user) {
+      throw new NotFoundError(EnumStatusCode.NOT_FOUND, "User not found");
+    }
+
+    // 2. Check if account is deleted
+    if (user.isDeleted) {
+      throw new UnAuthorizedError(
+        EnumStatusCode.ACCOUNT_DELETED,
+        "Your account has been deleted"
+      );
+    }
+
+    // 4. Check if account is active
+    if (!user.isActive) {
+      throw new UnAuthorizedError(
+        EnumStatusCode.ACCOUNT_DEACTIVATED,
+        "Account is deactivated"
+      );
+    }
+
+    // 5. Generate forgot password token and save
+    const token = TokenUtils.createForgotPasswordToken(user.id.toString());
+    user.forgotPasswordToken = token;
+    await user.save();
+
+    // 6. TODO: send token via email
+    console.log("Forgot password token generated:", token);
+  };
 }

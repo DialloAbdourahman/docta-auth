@@ -47,4 +47,8 @@ export class TokenUtils {
       return null;
     }
   }
+
+  static createForgotPasswordToken(userId: string): string {
+    return jwt.sign({ userId }, config.forgotPasswordTokenSecret);
+  }
 }
