@@ -222,6 +222,7 @@ export class AuthService {
     const refreshToken = TokenUtils.createRefreshToken(tokenData);
 
     user.token = refreshToken;
+    await user.save();
 
     // 6. Return user and tokens
     const userDto = new UserOutputDto(user);

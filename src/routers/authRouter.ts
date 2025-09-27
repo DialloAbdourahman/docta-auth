@@ -45,8 +45,10 @@ class AuthRouter {
 
     // Forgot password route
     // Reset password route
-    // Logout route
     // Refresh token route
+
+    // Require auth routes ///////////
+    // Logout route
     // Update password route
     // Update account route (Just the name)
   }

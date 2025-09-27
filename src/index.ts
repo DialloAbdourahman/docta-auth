@@ -33,6 +33,3 @@ const start = async () => {
 };
 
 start();
-
-// Apply inheritance on the user response models by inheriting all the createdBy, at, etc etc.
-// Test the create doctor
