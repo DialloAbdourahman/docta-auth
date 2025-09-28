@@ -11,6 +11,7 @@ import { UnAuthorizedError } from "../errors/UnAuthorizedError";
 import { LoggedInUserOutputDto, UserOutputDto } from "../dto/output/user";
 import { LoggedInUserTokenData } from "../interfaces/LoggedInUserToken";
 import { EnumUserRole } from "../enums/user-role";
+import { ValidateInfo } from "../utils/validate-info";
 
 export class AuthService {
   public createUserAndPatient = async (
@@ -177,32 +178,15 @@ export class AuthService {
     email: string,
     password: string
   ): Promise<LoggedInUserOutputDto> => {
-    // 1. Find user by email
-    const user: IUserDocument | null = await UserModel.findOne({ email });
-    if (!user) {
-      throw new UnAuthorizedError(
-        EnumStatusCode.UNAUTHORIZED,
-        "Invalid email or password"
-      );
-    }
+    //  Find user by email
+    const user: IUserDocument | null = (await UserModel.findOne({
+      email,
+    })) as IUserDocument;
 
-    // 2. Check if account is active
-    if (!user.isActive) {
-      throw new UnAuthorizedError(
-        EnumStatusCode.ACCOUNT_DEACTIVATED,
-        "Please activate your account before logging in"
-      );
-    }
+    // Validate user information
+    ValidateInfo.validateUser(user);
 
-    // 2. Check if account is active
-    if (user.isDeleted) {
-      throw new UnAuthorizedError(
-        EnumStatusCode.ACCOUNT_DELETED,
-        "Your account has been deleted"
-      );
-    }
-
-    // 4. Check if password matches
+    //  Check if password matches
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
       throw new UnAuthorizedError(
@@ -211,7 +195,7 @@ export class AuthService {
       );
     }
 
-    // 5. Generate tokens and store refresh token in db.
+    //  Generate tokens and store refresh token in db.
     const tokenData: LoggedInUserTokenData = {
       id: user.id.toString(),
       email: user.email,
@@ -224,7 +208,7 @@ export class AuthService {
     user.token = refreshToken;
     await user.save();
 
-    // 6. Return user and tokens
+    //  Return user and tokens
     const userDto = new UserOutputDto(user);
     return new LoggedInUserOutputDto(userDto, accessToken, refreshToken);
   };
@@ -232,7 +216,7 @@ export class AuthService {
   public refreshToken = async (
     refreshToken: string
   ): Promise<LoggedInUserOutputDto> => {
-    // 1. Verify the refresh token
+    // Verify the refresh token
     const tokenData = TokenUtils.verifyRefreshToken(refreshToken);
     if (!tokenData) {
       throw new UnAuthorizedError(
@@ -241,32 +225,15 @@ export class AuthService {
       );
     }
 
-    // 2. Find user by ID from token
-    const user: IUserDocument | null = await UserModel.findById(tokenData.id);
-    if (!user) {
-      throw new UnAuthorizedError(
-        EnumStatusCode.UNAUTHORIZED,
-        "User not found"
-      );
-    }
+    // Find user by ID from token
+    const user: IUserDocument | null = (await UserModel.findById(
+      tokenData.id
+    )) as IUserDocument;
 
-    // 3. Check if account is active
-    if (!user.isActive) {
-      throw new UnAuthorizedError(
-        EnumStatusCode.ACCOUNT_DEACTIVATED,
-        "Account is deactivated"
-      );
-    }
+    // Validate user information
+    ValidateInfo.validateUser(user);
 
-    // 4. Check if account is deleted
-    if (user.isDeleted) {
-      throw new UnAuthorizedError(
-        EnumStatusCode.ACCOUNT_DELETED,
-        "Account has been deleted"
-      );
-    }
-
-    // 5. Verify that the incoming token matches the token stored in the user
+    // Verify that the incoming token matches the token stored in the user
     if (user.token !== refreshToken) {
       throw new UnAuthorizedError(
         EnumStatusCode.UNAUTHORIZED,
@@ -274,7 +241,7 @@ export class AuthService {
       );
     }
 
-    // 6. Generate new tokens (token rotation)
+    // Generate new tokens (token rotation)
     const newTokenData: LoggedInUserTokenData = {
       id: user.id.toString(),
       email: user.email,
@@ -284,44 +251,30 @@ export class AuthService {
     const newAccessToken = TokenUtils.createAccessToken(newTokenData);
     const newRefreshToken = TokenUtils.createRefreshToken(newTokenData);
 
-    // 7. Store new refresh token in database
+    // Store new refresh token in database
     user.token = newRefreshToken;
     await user.save();
 
-    // 8. Return user and new tokens
+    // Return user and new tokens
     const userDto = new UserOutputDto(user);
     return new LoggedInUserOutputDto(userDto, newAccessToken, newRefreshToken);
   };
 
   public forgotPassword = async (email: string): Promise<void> => {
-    // 1. Find user by email
-    const user: IUserDocument | null = await UserModel.findOne({ email });
-    if (!user) {
-      throw new NotFoundError(EnumStatusCode.NOT_FOUND, "User not found");
-    }
+    // Find user by email
+    const user: IUserDocument | null = (await UserModel.findOne({
+      email,
+    })) as IUserDocument;
 
-    // 2. Check if account is deleted
-    if (user.isDeleted) {
-      throw new UnAuthorizedError(
-        EnumStatusCode.ACCOUNT_DELETED,
-        "Your account has been deleted"
-      );
-    }
+    // Validate user information
+    ValidateInfo.validateUser(user);
 
-    // 4. Check if account is active
-    if (!user.isActive) {
-      throw new UnAuthorizedError(
-        EnumStatusCode.ACCOUNT_DEACTIVATED,
-        "Account is deactivated"
-      );
-    }
-
-    // 5. Generate forgot password token and save
+    // Generate forgot password token and save
     const token = TokenUtils.createForgotPasswordToken(user.id.toString());
     user.forgotPasswordToken = token;
     await user.save();
 
-    // 6. TODO: send token via email
+    // TODO: send token via email
     console.log("Forgot password token generated:", token);
   };
 
@@ -339,26 +292,14 @@ export class AuthService {
     }
 
     // 2. Find user by id
-    const user: IUserDocument | null = await UserModel.findById(userId);
-    if (!user) {
-      throw new NotFoundError(EnumStatusCode.NOT_FOUND, "User not found");
-    }
+    const user: IUserDocument | null = (await UserModel.findById(
+      userId
+    )) as IUserDocument;
 
-    // 3. Check user status
-    if (user.isDeleted) {
-      throw new UnAuthorizedError(
-        EnumStatusCode.ACCOUNT_DELETED,
-        "Your account has been deleted"
-      );
-    }
-    if (!user.isActive) {
-      throw new UnAuthorizedError(
-        EnumStatusCode.ACCOUNT_DEACTIVATED,
-        "Account is deactivated"
-      );
-    }
+    // Validate user information
+    ValidateInfo.validateUser(user);
 
-    // 4. Ensure token matches the one stored in DB
+    // Ensure token matches the one stored in DB
     if (!user.forgotPasswordToken || user.forgotPasswordToken !== token) {
       throw new UnAuthorizedError(
         EnumStatusCode.UNAUTHORIZED,
@@ -366,7 +307,7 @@ export class AuthService {
       );
     }
 
-    // 5. Update password and clear forgot password token
+    // Update password and clear forgot password token
     user.password = password;
     user.forgotPasswordToken = null;
     await user.save();
@@ -376,27 +317,16 @@ export class AuthService {
     userId: string,
     dto: UpdateUserDto
   ): Promise<UserOutputDto> => {
-    const user: IUserDocument | null = await UserModel.findById(userId);
-    if (!user) {
-      throw new NotFoundError(EnumStatusCode.NOT_FOUND, "User not found");
-    }
+    const user: IUserDocument | null = (await UserModel.findById(
+      userId
+    )) as IUserDocument;
 
-    if (user.isDeleted) {
-      throw new UnAuthorizedError(
-        EnumStatusCode.ACCOUNT_DELETED,
-        "Your account has been deleted"
-      );
-    }
-
-    if (!user.isActive) {
-      throw new UnAuthorizedError(
-        EnumStatusCode.ACCOUNT_DEACTIVATED,
-        "Account is deactivated"
-      );
-    }
+    // Validate user information
+    ValidateInfo.validateUser(user);
 
     // Apply only provided fields
     user.name = dto.name || user.name;
+    user.updatedBy = user;
 
     await user.save();
     return new UserOutputDto(user);
@@ -407,24 +337,12 @@ export class AuthService {
     oldPassword: string,
     newPassword: string
   ): Promise<void> => {
-    const user: IUserDocument | null = await UserModel.findById(userId);
-    if (!user) {
-      throw new NotFoundError(EnumStatusCode.NOT_FOUND, "User not found");
-    }
+    const user: IUserDocument | null = (await UserModel.findById(
+      userId
+    )) as IUserDocument;
 
-    if (user.isDeleted) {
-      throw new UnAuthorizedError(
-        EnumStatusCode.ACCOUNT_DELETED,
-        "Your account has been deleted"
-      );
-    }
-
-    if (!user.isActive) {
-      throw new UnAuthorizedError(
-        EnumStatusCode.ACCOUNT_DEACTIVATED,
-        "Account is deactivated"
-      );
-    }
+    // Validate user information
+    ValidateInfo.validateUser(user);
 
     const isMatch = await user.comparePassword(oldPassword);
     if (!isMatch) {
@@ -435,28 +353,17 @@ export class AuthService {
     }
 
     user.password = newPassword;
+    user.updatedBy = user;
     await user.save();
   };
 
   public logout = async (userId: string): Promise<void> => {
-    const user: IUserDocument | null = await UserModel.findById(userId);
-    if (!user) {
-      throw new NotFoundError(EnumStatusCode.NOT_FOUND, "User not found");
-    }
+    const user: IUserDocument | null = (await UserModel.findById(
+      userId
+    )) as IUserDocument;
 
-    if (user.isDeleted) {
-      throw new UnAuthorizedError(
-        EnumStatusCode.ACCOUNT_DELETED,
-        "Your account has been deleted"
-      );
-    }
-
-    if (!user.isActive) {
-      throw new UnAuthorizedError(
-        EnumStatusCode.ACCOUNT_DEACTIVATED,
-        "Account is deactivated"
-      );
-    }
+    // Validate user information
+    ValidateInfo.validateUser(user);
 
     user.token = null;
     await user.save();
