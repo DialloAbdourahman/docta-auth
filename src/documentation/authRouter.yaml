@@ -17,7 +17,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreatePatientDto"
+              $ref: "#/components/schemas/CreateUserDto"
       responses:
         "201":
           description: Patient account created successfully
@@ -114,7 +114,7 @@ paths:
 
 components:
   schemas:
-    CreatePatientDto:
+    CreateUserDto:
       type: object
       required:
         - name

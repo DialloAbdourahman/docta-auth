@@ -1,12 +1,12 @@
 import { api } from "../../src/testConfig";
 import { EnumStatusCode } from "../../src/enums/status-codes";
 import { IUserDocument, UserModel } from "../../src/models/user";
-import { CreatePatientDto } from "../../src/dto/input/patient";
+import { CreateUserDto } from "../../src/dto/input/patient";
 
 describe("Auth API Routes - Activate patient's account", () => {
   describe("GET /api/auth/v1/activate/patient", () => {
     it("should activate a patient's account successfully with a valid token", async () => {
-      const userData: CreatePatientDto = {
+      const userData: CreateUserDto = {
         name: "Jane Patient",
         email: "janepatient@example.com",
         password: "SecurePass123!",

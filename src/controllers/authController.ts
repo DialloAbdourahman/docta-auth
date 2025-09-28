@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { AuthService } from "../services/authService";
 import { OrchestrationResult } from "../utils/orchestration-result";
 import { EnumStatusCode } from "../enums/status-codes";
-import { CreatePatientDto } from "../dto/input/patient";
+import { CreateUserDto } from "../dto/input/user";
 import { ActivateDoctorAccountDto } from "../dto/input/doctor";
 import {
   LoginDto,
@@ -21,7 +21,7 @@ export class AuthController {
   }
 
   public createUser = async (req: Request, res: Response): Promise<void> => {
-    const userData: CreatePatientDto = req.body;
+    const userData: CreateUserDto = req.body;
 
     await this.authService.createUserAndPatient(userData);
 

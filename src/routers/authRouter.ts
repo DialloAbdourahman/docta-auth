@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { AuthController } from "../controllers/authController";
 import { validationMiddleware } from "../middleware/validate-request";
-import { CreatePatientDto } from "../dto/input/patient";
+import { CreateUserDto } from "../dto/input/user";
 import { ActivateDoctorAccountDto } from "../dto/input/doctor";
 import {
   LoginDto,
@@ -24,7 +24,7 @@ class AuthRouter {
     // Create patient route
     this.router.post(
       "/",
-      validationMiddleware(CreatePatientDto),
+      validationMiddleware(CreateUserDto),
       this.authController.createUser
     );
 

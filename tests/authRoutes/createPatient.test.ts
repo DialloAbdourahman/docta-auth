@@ -2,12 +2,12 @@ import { api } from "../../src/testConfig";
 import { EnumStatusCode } from "../../src/enums/status-codes";
 import { EnumUserRole, IUserDocument, UserModel } from "../../src/models/user";
 import { IPatientDocument, PatientModel } from "../../src/models/patient";
-import { CreatePatientDto } from "../../src/dto/input/patient";
+import { CreateUserDto } from "../../src/dto/input/patient";
 
 describe("Auth API Routes - Create Patient", () => {
   describe("POST /api/auth/v1", () => {
     it("should create a new user and patient successfully with proper data", async () => {
-      const userData: CreatePatientDto = {
+      const userData: CreateUserDto = {
         name: "John Patient",
         email: "johnpatient@example.com",
         password: "securePass123!",

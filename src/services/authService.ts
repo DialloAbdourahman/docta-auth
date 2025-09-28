@@ -5,7 +5,7 @@ import { IUserDocument, UserModel } from "../models/user";
 import { IPatientDocument, PatientModel } from "../models/patient";
 import { DoctorModel } from "../models/doctor";
 import { TokenUtils } from "../utils/token-utils";
-import { CreatePatientDto } from "../dto/input/patient";
+import { CreateUserDto } from "../dto/input/user";
 import { NotFoundError } from "../errors/NotFoundError";
 import { UnAuthorizedError } from "../errors/UnAuthorizedError";
 import { LoggedInUserOutputDto, UserOutputDto } from "../dto/output/user";
@@ -14,7 +14,7 @@ import { EnumUserRole } from "../enums/user-role";
 
 export class AuthService {
   public createUserAndPatient = async (
-    userData: CreatePatientDto
+    userData: CreateUserDto
   ): Promise<{ user: IUserDocument; patient: IPatientDocument }> => {
     const existingUser = await UserModel.findOne({ email: userData.email });
     if (existingUser) {
