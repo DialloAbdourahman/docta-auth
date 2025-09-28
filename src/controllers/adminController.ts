@@ -14,7 +14,7 @@ export class AdminController {
   public createDoctor = async (req: Request, res: Response): Promise<void> => {
     const dto: CreateDoctorDto = req.body;
 
-    await this.adminService.createDoctorProfile(dto);
+    await this.adminService.createDoctorProfile(dto, req.currentUser!);
 
     res.status(201).json(
       OrchestrationResult.item({

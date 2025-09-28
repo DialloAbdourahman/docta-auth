@@ -6,6 +6,7 @@ export class TokenUtils {
   static createActivationToken(userId: string): string {
     return jwt.sign({ userId }, config.activationTokenSecret);
   }
+
   static decodeActivationToken(token: string): string | null {
     try {
       const decoded = jwt.verify(token, config.activationTokenSecret) as
@@ -45,6 +46,19 @@ export class TokenUtils {
       };
     } catch {
       return null;
+    }
+  }
+
+  static verifyAccessToken(token: string): LoggedInUserTokenData {
+    try {
+      const decoded = jwt.verify(token, config.accessTokenSecret) as JwtPayload;
+      return {
+        id: decoded.id,
+        email: decoded.email,
+        role: decoded.role,
+      };
+    } catch (error) {
+      throw error;
     }
   }
 

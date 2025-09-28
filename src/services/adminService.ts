@@ -8,10 +8,12 @@ import { EnumStatusCode } from "../enums/status-codes";
 import { CreateDoctorDto } from "../dto/input/doctor";
 import { NotFoundError } from "../errors/NotFoundError";
 import { EnumUserRole } from "../enums/user-role";
+import { LoggedInUserTokenData } from "../interfaces/LoggedInUserToken";
 
 export class AdminService {
   public createDoctorProfile = async (
-    dto: CreateDoctorDto
+    dto: CreateDoctorDto,
+    admin: LoggedInUserTokenData
   ): Promise<{ user: IUserDocument; doctor: IDoctorDocument }> => {
     const existingUser = await UserModel.findOne({ email: dto.email });
     if (existingUser) {
@@ -39,6 +41,7 @@ export class AdminService {
         email: dto.email,
         role: EnumUserRole.DOCTOR,
         isActive: false,
+        createdBy: admin.id,
       });
       await user.save({ session });
 
@@ -50,6 +53,7 @@ export class AdminService {
         consultationFee: dto.consultationFee,
         isActive: user.isActive,
         isDeleted: user.isDeleted,
+        createdBy: admin.id,
       });
       await doctor.save({ session });
 
