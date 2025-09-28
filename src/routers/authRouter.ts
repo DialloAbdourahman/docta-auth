@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { AuthController } from "../controllers/authController";
 import { validationMiddleware } from "../middleware/validate-request";
-import { CreateUserDto } from "../dto/input/user";
+import { CreateUserDto, UpdateUserDto } from "../dto/input/user";
 import { ActivateDoctorAccountDto } from "../dto/input/doctor";
 import {
   LoginDto,
@@ -9,6 +9,8 @@ import {
   ForgotPasswordDto,
   ResetPasswordDto,
 } from "../dto/input/user";
+import { UpdatePasswordDto } from "../dto/input/user";
+import { requireAuth } from "../middleware/require-auth";
 
 class AuthRouter {
   public readonly router: Router;
@@ -68,10 +70,24 @@ class AuthRouter {
       this.authController.resetPassword
     );
 
-    // Add a require auth and vefify roles middleware and make it in such a way that it should not call the db as it will be used in other services. Make sure to test well the case when a user's token has expired (require auth.)
-    // Logout route
-    // Update password route
-    // Update account route (Just the name)
+    // Update current user's info
+    this.router.patch(
+      "/me",
+      requireAuth,
+      validationMiddleware(UpdateUserDto),
+      this.authController.updateUser
+    );
+
+    // Update current user's password
+    this.router.patch(
+      "/password",
+      requireAuth,
+      validationMiddleware(UpdatePasswordDto),
+      this.authController.updatePassword
+    );
+
+    // Logout current user
+    this.router.post("/logout", requireAuth, this.authController.logout);
   }
 }
 

@@ -65,3 +65,17 @@ export class UpdateUserDto {
   @MaxLength(50)
   name: string;
 }
+
+export class UpdatePasswordDto {
+  @IsString()
+  @MinLength(6)
+  @MaxLength(30)
+  @IsStrongPassword()
+  oldPassword: string;
+
+  @IsString()
+  @MinLength(6)
+  @MaxLength(30)
+  @IsStrongPassword()
+  newPassword: string;
+}

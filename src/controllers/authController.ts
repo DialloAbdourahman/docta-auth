@@ -12,6 +12,8 @@ import {
 } from "../dto/input/user";
 import { LoggedInUserOutputDto } from "../dto/output/user";
 import { BadRequestError } from "../errors/BadRequestError";
+import { UpdateUserDto } from "../dto/input/user";
+import { UpdatePasswordDto } from "../dto/input/user";
 
 export class AuthController {
   private authService: AuthService;
@@ -129,6 +131,54 @@ export class AuthController {
       OrchestrationResult.item({
         code: EnumStatusCode.UPDATED_SUCCESSFULLY,
         message: "Password reset successfully.",
+      })
+    );
+  };
+
+  public updateUser = async (req: Request, res: Response): Promise<void> => {
+    const dto = req.body as UpdateUserDto;
+
+    const result = await this.authService.updateUserInfo(
+      req.currentUser!.id,
+      dto
+    );
+
+    res.status(200).json(
+      OrchestrationResult.item({
+        code: EnumStatusCode.UPDATED_SUCCESSFULLY,
+        message: "User updated successfully.",
+        data: result,
+      })
+    );
+  };
+
+  public updatePassword = async (
+    req: Request,
+    res: Response
+  ): Promise<void> => {
+    const { oldPassword, newPassword } = req.body as UpdatePasswordDto;
+
+    await this.authService.updatePassword(
+      req.currentUser!.id,
+      oldPassword,
+      newPassword
+    );
+
+    res.status(200).json(
+      OrchestrationResult.item({
+        code: EnumStatusCode.UPDATED_SUCCESSFULLY,
+        message: "Password updated successfully.",
+      })
+    );
+  };
+
+  public logout = async (req: Request, res: Response): Promise<void> => {
+    await this.authService.logout(req.currentUser!.id);
+
+    res.status(200).json(
+      OrchestrationResult.item({
+        code: EnumStatusCode.UPDATED_SUCCESSFULLY,
+        message: "Logged out successfully.",
       })
     );
   };

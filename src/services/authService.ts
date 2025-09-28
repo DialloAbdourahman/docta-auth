@@ -5,7 +5,7 @@ import { IUserDocument, UserModel } from "../models/user";
 import { IPatientDocument, PatientModel } from "../models/patient";
 import { DoctorModel } from "../models/doctor";
 import { TokenUtils } from "../utils/token-utils";
-import { CreateUserDto } from "../dto/input/user";
+import { CreateUserDto, UpdateUserDto } from "../dto/input/user";
 import { NotFoundError } from "../errors/NotFoundError";
 import { UnAuthorizedError } from "../errors/UnAuthorizedError";
 import { LoggedInUserOutputDto, UserOutputDto } from "../dto/output/user";
@@ -369,6 +369,96 @@ export class AuthService {
     // 5. Update password and clear forgot password token
     user.password = password;
     user.forgotPasswordToken = null;
+    await user.save();
+  };
+
+  public updateUserInfo = async (
+    userId: string,
+    dto: UpdateUserDto
+  ): Promise<UserOutputDto> => {
+    const user: IUserDocument | null = await UserModel.findById(userId);
+    if (!user) {
+      throw new NotFoundError(EnumStatusCode.NOT_FOUND, "User not found");
+    }
+
+    if (user.isDeleted) {
+      throw new UnAuthorizedError(
+        EnumStatusCode.ACCOUNT_DELETED,
+        "Your account has been deleted"
+      );
+    }
+
+    if (!user.isActive) {
+      throw new UnAuthorizedError(
+        EnumStatusCode.ACCOUNT_DEACTIVATED,
+        "Account is deactivated"
+      );
+    }
+
+    // Apply only provided fields
+    user.name = dto.name || user.name;
+
+    await user.save();
+    return new UserOutputDto(user);
+  };
+
+  public updatePassword = async (
+    userId: string,
+    oldPassword: string,
+    newPassword: string
+  ): Promise<void> => {
+    const user: IUserDocument | null = await UserModel.findById(userId);
+    if (!user) {
+      throw new NotFoundError(EnumStatusCode.NOT_FOUND, "User not found");
+    }
+
+    if (user.isDeleted) {
+      throw new UnAuthorizedError(
+        EnumStatusCode.ACCOUNT_DELETED,
+        "Your account has been deleted"
+      );
+    }
+
+    if (!user.isActive) {
+      throw new UnAuthorizedError(
+        EnumStatusCode.ACCOUNT_DEACTIVATED,
+        "Account is deactivated"
+      );
+    }
+
+    const isMatch = await user.comparePassword(oldPassword);
+    if (!isMatch) {
+      throw new UnAuthorizedError(
+        EnumStatusCode.UNAUTHORIZED,
+        "Old password is incorrect"
+      );
+    }
+
+    user.password = newPassword;
+    await user.save();
+  };
+
+  public logout = async (userId: string): Promise<void> => {
+    const user: IUserDocument | null = await UserModel.findById(userId);
+    if (!user) {
+      throw new NotFoundError(EnumStatusCode.NOT_FOUND, "User not found");
+    }
+
+    if (user.isDeleted) {
+      throw new UnAuthorizedError(
+        EnumStatusCode.ACCOUNT_DELETED,
+        "Your account has been deleted"
+      );
+    }
+
+    if (!user.isActive) {
+      throw new UnAuthorizedError(
+        EnumStatusCode.ACCOUNT_DEACTIVATED,
+        "Account is deactivated"
+      );
+    }
+
+    user.token = null;
     await user.save();
   };
 }
