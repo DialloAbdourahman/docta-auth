@@ -14,6 +14,7 @@ export interface IDoctor extends IBaseModel {
   isVerified: boolean;
   isVisible: boolean;
   isDeactivatedByAdmin: boolean;
+  photo?: string;
 }
 
 export interface IDoctorDocument extends IDoctor, Document {}
@@ -41,6 +42,7 @@ const DoctorSchema = new Schema<IDoctorDocument>({
   isVerified: { type: Boolean, default: false },
   isVisible: { type: Boolean, default: true },
   isDeactivatedByAdmin: { type: Boolean, default: false },
+  photo: { type: String, required: false },
 });
 
 const createSlug = (text: string): string =>

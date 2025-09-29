@@ -9,6 +9,7 @@ import {
   IsNumber,
   Min,
   IsNotEmpty,
+  IsBoolean,
 } from "class-validator";
 
 export class CreateDoctorDto {
@@ -44,4 +45,26 @@ export class ActivateDoctorAccountDto {
   @MaxLength(30)
   @IsStrongPassword()
   password: string;
+}
+
+export class UpdateDoctorDto {
+  @IsOptional()
+  @IsString()
+  @MinLength(3)
+  @MaxLength(50)
+  name: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(500)
+  biography?: string;
+
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  consultationFee?: number;
+
+  @IsOptional()
+  @IsBoolean()
+  isVisible?: boolean;
 }
