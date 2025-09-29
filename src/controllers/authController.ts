@@ -10,7 +10,7 @@ import {
   ForgotPasswordDto,
   ResetPasswordDto,
 } from "../dto/input/user";
-import { LoggedInUserOutputDto } from "../dto/output/user";
+import { LoggedInUserOutputDto, UserOutputDto } from "../dto/output/user";
 import { BadRequestError } from "../errors/BadRequestError";
 import { UpdateUserDto } from "../dto/input/user";
 import { UpdatePasswordDto } from "../dto/input/user";
@@ -144,7 +144,7 @@ export class AuthController {
     );
 
     res.status(200).json(
-      OrchestrationResult.item({
+      OrchestrationResult.item<UserOutputDto>({
         code: EnumStatusCode.UPDATED_SUCCESSFULLY,
         message: "User updated successfully.",
         data: result,

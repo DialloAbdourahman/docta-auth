@@ -9,6 +9,10 @@ export class UserOutputDto {
   createdAt: number;
   updatedAt: number;
 
+  createdBy?: string;
+  updatedBy?: string;
+  deletedBy?: string;
+
   constructor(user: IUserDocument, isAdmin: boolean = false) {
     this.id = user.id.toString();
     this.name = user.name;
@@ -19,6 +23,10 @@ export class UserOutputDto {
     this.isDeleted = user.isDeleted;
     this.createdAt = user.createdAt;
     this.updatedAt = user.updatedAt;
+
+    this.createdBy = isAdmin ? user.createdBy?.name : undefined;
+    this.updatedBy = isAdmin ? user.updatedBy?.name : undefined;
+    this.deletedBy = isAdmin ? user.deletedBy?.name : undefined;
   }
 }
 
