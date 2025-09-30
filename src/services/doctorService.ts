@@ -4,7 +4,7 @@ import { ValidateInfo } from "../utils/validate-info";
 import { IUserDocument, UserModel } from "../models/user";
 import { IDoctorDocument, DoctorModel } from "../models/doctor";
 import { UpdateDoctorDto } from "../dto/input/doctor";
-import { DoctorOutputDto } from "../dto/output/doctor";
+import { DoctorAdminOutputDto, DoctorOutputDto } from "../dto/output/doctor";
 
 export class DoctorService {
   //   public createDoctorProfile = async (
@@ -128,6 +128,6 @@ export class DoctorService {
       );
     }
 
-    return new DoctorOutputDto(doctor);
+    return new DoctorAdminOutputDto(doctor);
   };
 }

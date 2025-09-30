@@ -1,43 +1,65 @@
 import { IDoctorDocument } from "../../models/doctor";
+import { SpecialtyOutputDto } from "./specialty";
 import { UserOutputDto } from "./user";
 
+// Base DTO for everyone
 export class DoctorOutputDto {
   id: string;
   user: UserOutputDto;
-  specialty: string;
+  specialty: SpecialtyOutputDto;
   name: string;
-  biography?: string;
+  biography: string | null;
   slug: string;
-  isActive?: boolean;
-  consultationFee?: number;
+  isActive: boolean;
+  consultationFee: number | null;
   isVerified: boolean;
   isVisible: boolean;
-  photo?: string;
+  photo: string | null;
+
   isDeleted: boolean;
   createdAt: number;
   updatedAt: number;
-  isDeactivatedByAdmin?: boolean;
-  createdBy?: string;
-  updatedBy?: string;
-  deletedBy?: string;
 
-  constructor(doctor: IDoctorDocument, isAdmin: boolean = false) {
+  constructor(doctor: IDoctorDocument) {
     this.id = doctor.id.toString();
-    this.user = new UserOutputDto(doctor.user, isAdmin);
+    this.user = new UserOutputDto(doctor.user);
     this.name = doctor.name;
-    this.specialty = doctor.specialty.name;
+    this.specialty = new SpecialtyOutputDto(doctor.specialty);
+    this.slug = doctor.slug;
+    this.biography = doctor.biography || null;
     this.isActive = doctor.isActive;
+    this.consultationFee = doctor.consultationFee ?? null;
     this.isVerified = doctor.isVerified;
     this.isVisible = doctor.isVisible;
-    this.isDeactivatedByAdmin = doctor.isDeactivatedByAdmin;
-    this.photo = doctor.photo;
+    this.photo = doctor.photo || null;
     this.isDeleted = doctor.isDeleted;
     this.createdAt = doctor.createdAt;
     this.updatedAt = doctor.updatedAt;
-    this.consultationFee = doctor.consultationFee;
+  }
+}
 
-    this.createdBy = isAdmin ? doctor.createdBy?.name : undefined;
-    this.updatedBy = isAdmin ? doctor.updatedBy?.name : undefined;
-    this.deletedBy = isAdmin ? doctor.deletedBy?.name : undefined;
+// Extended DTO for admin responses
+export class DoctorAdminOutputDto extends DoctorOutputDto {
+  isDeactivatedByAdmin: boolean | null;
+  createdBy: UserOutputDto | null;
+  updatedBy: UserOutputDto | null;
+  deletedBy: UserOutputDto | null;
+
+  constructor(doctor: IDoctorDocument) {
+    super(doctor); // call base constructor
+
+    this.isDeactivatedByAdmin = doctor.isDeactivatedByAdmin ?? null;
+
+    this.createdBy = doctor.createdBy
+      ? new UserOutputDto(doctor.createdBy)
+      : null;
+
+    this.updatedBy = doctor.updatedBy
+      ? new UserOutputDto(doctor.updatedBy)
+      : null;
+
+    this.deletedBy = doctor.deletedBy
+      ? new UserOutputDto(doctor.deletedBy)
+      : null;
   }
 }

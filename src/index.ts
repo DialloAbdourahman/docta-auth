@@ -33,3 +33,9 @@ const start = async () => {
 };
 
 start();
+
+// Work on the response dtos better.
+// Add specialty response dto too.
+
+// Complete all the routes.
+// Start looking at the email service with ses and sqs.

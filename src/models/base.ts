@@ -1,14 +1,14 @@
 import { Schema, SchemaDefinition } from "mongoose";
-import { IUser } from "./user";
+import { IUser, IUserDocument } from "./user";
 
 export interface IBaseModel {
   isDeleted: boolean;
   createdAt: number;
   updatedAt: number;
   deletedAt?: number;
-  createdBy?: IUser;
-  updatedBy?: IUser;
-  deletedBy?: IUser;
+  createdBy?: IUserDocument;
+  updatedBy?: IUserDocument;
+  deletedBy?: IUserDocument;
 }
 
 // Base Schema
