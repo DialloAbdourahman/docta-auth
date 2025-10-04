@@ -34,8 +34,19 @@ const start = async () => {
 
 start();
 
-// Work on the response dtos better.
-// Add specialty response dto too.
+// Doctor //
+// Route for the doctor to upload his picture.
 
-// Complete all the routes.
+// Patient //
+// Update my patient's profile information.
+// Get my patient's profile information.
+
+// Admin //
+// Deactive doctors.
+// Delete doctors.
+// Delete patients.
+// CRUD Specialties.
+
 // Start looking at the email service with ses and sqs.
+
+// Add a logger and store error logs

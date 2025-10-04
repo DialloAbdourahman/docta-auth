@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "/home/diallo/Documents/DOCTA/docta-auth/logs/.3b7124c78ffb5979989bc9af6567a8af963f7a0d-audit.json",
+    "files": [
+        {
+            "date": 1759601844024,
+            "name": "/home/diallo/Documents/DOCTA/docta-auth/logs/2025-10-04.log",
+            "hash": "7ba280e9433283eb6f440a46f22d3cf4c42b77c8b973e651206eb9e4ee197a4a"
+        }
+    ],
+    "hashType": "sha256"
+}

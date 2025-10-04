@@ -39,8 +39,6 @@ class DoctorRouter {
       verifyRoles([EnumUserRole.DOCTOR]),
       this.controller.getMyDoctor
     );
-
-    // Route for the doctor to upload his picture.
   }
 }
 
