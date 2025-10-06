@@ -36,6 +36,7 @@ start();
 
 // Doctor //
 // Route for the doctor to upload his picture.
+// Visit doctolib and add attributes like eductions, positions, etc etc.
 
 // Patient //
 // Update my patient's profile information.
@@ -48,5 +49,3 @@ start();
 // CRUD Specialties.
 
 // Start looking at the email service with ses and sqs.
-
-// Add a logger and store error logs

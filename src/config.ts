@@ -12,6 +12,10 @@ interface Config {
   forgotPasswordTokenSecret: string;
   accessTokenExpiry: number;
   refreshTokenExpiry: number;
+  awsAccessKey: string;
+  awsSecretKey: string;
+  awsS3Bucket: string;
+  awsS3Region: string;
 }
 
 const config: Config = {
@@ -24,6 +28,10 @@ const config: Config = {
   forgotPasswordTokenSecret: String(process.env.FORGOT_PASSWORD_TOKEN_SECRET),
   accessTokenExpiry: Number(process.env.ACCESS_TOKEN_EXPIRY),
   refreshTokenExpiry: Number(process.env.REFRESH_TOKEN_EXPIRY),
+  awsAccessKey: String(process.env.AWS_ACCESS_KEY),
+  awsSecretKey: String(process.env.AWS_SECRET_KEY),
+  awsS3Bucket: String(process.env.AWS_S3_BUCKET),
+  awsS3Region: String(process.env.AWS_S3_REGION),
 };
 
 export default config;
