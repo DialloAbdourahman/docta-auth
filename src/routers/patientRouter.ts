@@ -25,6 +25,14 @@ class PatientRouter {
       validationMiddleware(UpdatePatientDto),
       this.controller.updateMyPatient
     );
+
+    // Get my patient profile
+    this.router.get(
+      "/me",
+      requireAuth,
+      verifyRoles([EnumUserRole.PATIENT]),
+      this.controller.getMyPatient
+    );
   }
 }
 

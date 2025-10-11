@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { OrchestrationResult } from "../utils/orchestration-result";
 import { EnumStatusCode } from "../enums/status-codes";
 import { UpdatePatientDto } from "../dto/input/patient";
-import { PatientOutputDto } from "../dto/output/patient";
+import { PatientAdminOutputDto, PatientOutputDto } from "../dto/output/patient";
 import { PatientService } from "../services/patientService";
 
 export class PatientController {
@@ -27,6 +27,23 @@ export class PatientController {
       OrchestrationResult.item<PatientOutputDto>({
         code: EnumStatusCode.UPDATED_SUCCESSFULLY,
         message: "Patient profile updated successfully.",
+        data: result,
+      })
+    );
+  };
+
+  public getMyPatient = async (
+    req: Request,
+    res: Response
+  ): Promise<void> => {
+    const result = await this.patientService.getMyPatient(
+      req.currentUser!.id
+    );
+
+    res.status(200).json(
+      OrchestrationResult.item<PatientAdminOutputDto>({
+        code: EnumStatusCode.RECOVERED_SUCCESSFULLY,
+        message: "Patient profile fetched successfully.",
         data: result,
       })
     );

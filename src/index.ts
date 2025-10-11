@@ -37,10 +37,6 @@ start();
 // Doctor //
 // Visit doctolib and add attributes like eductions, positions, etc etc.
 
-// Patient //
-// Update my patient's profile information.
-// Get my patient's profile information.
-
 // Admin //
 // Deactive doctors.
 // Delete doctors.
