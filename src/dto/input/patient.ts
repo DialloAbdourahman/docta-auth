@@ -1,4 +1,4 @@
-import { IsDate, IsEnum, IsOptional, IsString } from "class-validator";
+import { IsEnum, IsNumber, IsOptional, IsString } from "class-validator";
 import { Gender } from "../../models/patient";
 
 export class UpdatePatientDto {
@@ -12,6 +12,6 @@ export class UpdatePatientDto {
   phoneNumber?: string;
 
   @IsOptional()
-  @IsDate()
-  dob?: Date;
+  @IsNumber()
+  dob?: number;
 }

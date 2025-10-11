@@ -6,6 +6,7 @@ import authRouter from "./routers/authRouter";
 import adminRouter from "./routers/adminRouter";
 import { swaggerSpec } from "./swagger";
 import doctorRouter from "./routers/doctorRouter";
+import patientRouter from "./routers/patientRouter";
 
 const app = express();
 
@@ -18,12 +19,12 @@ app.use("/api/auth/v1/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use("/api/auth/v1", expressAsyncHandler(authRouter));
 app.use("/api/auth/v1/admin", expressAsyncHandler(adminRouter));
 app.use("/api/auth/v1/doctor", expressAsyncHandler(doctorRouter));
-// app.use("/api/auth/v1/patient", expressAsyncHandler(patientRouter));
+app.use("/api/auth/v1/patient", expressAsyncHandler(patientRouter));
+
+app.use(errorHandler);
 
 // app.all("*", () => {
 //   throw new NotFoundError();
 // });
-
-app.use(errorHandler);
 
 export default app;
