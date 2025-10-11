@@ -4,8 +4,8 @@ import { UserOutputDto } from "./user";
 // Base DTO for everyone
 export class SpecialtyOutputDto {
   id: string;
-  name: string;
-  description: string | null;
+  en: { name: string; description: string | null };
+  fr: { name: string; description: string | null } | null;
 
   isDeleted: boolean;
   createdAt: number;
@@ -13,8 +13,16 @@ export class SpecialtyOutputDto {
 
   constructor(specialty: ISpecialtyDocument) {
     this.id = specialty.id.toString();
-    this.name = specialty.name;
-    this.description = specialty.description || null;
+    this.en = {
+      name: specialty.en.name,
+      description: specialty.en.description || null,
+    };
+    this.fr = specialty.fr
+      ? {
+          name: specialty.fr.name,
+          description: specialty.fr.description || null,
+        }
+      : null;
     this.isDeleted = specialty.isDeleted;
     this.createdAt = specialty.createdAt;
     this.updatedAt = specialty.updatedAt;

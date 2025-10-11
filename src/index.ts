@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import app from "./app";
 import config from "./config";
 import mongoose from "mongoose";
@@ -41,6 +42,5 @@ start();
 // Deactive doctors.
 // Delete doctors.
 // Delete patients.
-// CRUD Specialties.
 
 // Start looking at the email service with ses and sqs.
