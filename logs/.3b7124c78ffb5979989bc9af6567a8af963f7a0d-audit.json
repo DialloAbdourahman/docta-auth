@@ -14,6 +14,26 @@
             "date": 1759696539493,
             "name": "/home/diallo/Documents/DOCTA/docta-auth/logs/2025-10-05.log",
             "hash": "611f4f368306575e5e5b74707c1c3b6871c25c96944fbf64dfa0a968c01a694d"
+        },
+        {
+            "date": 1759777241668,
+            "name": "/home/diallo/Documents/DOCTA/docta-auth/logs/2025-10-06.log",
+            "hash": "a63befca9105518b5ebd0074b6ca402fbdac95410f94270e29e7283cf620d5a5"
+        },
+        {
+            "date": 1759838686805,
+            "name": "/home/diallo/Documents/DOCTA/docta-auth/logs/2025-10-07.log",
+            "hash": "22a23778d1b9aeedecf0c492b7dd985621691bae2bdbc55821ee861b6d533c20"
+        },
+        {
+            "date": 1760019814245,
+            "name": "/home/diallo/Documents/DOCTA/docta-auth/logs/2025-10-09.log",
+            "hash": "e85eed23f2efd1ab930d3b4d9b64f52c9085ba0fe4d125fe814d9e0417aba49c"
+        },
+        {
+            "date": 1760189608918,
+            "name": "/home/diallo/Documents/DOCTA/docta-auth/logs/2025-10-11.log",
+            "hash": "b17b38fa457b11aee0ce434873eaf0a6303c8b47ce772b0ffde47908e36d80fe"
         }
     ],
     "hashType": "sha256"

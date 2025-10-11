@@ -5,6 +5,7 @@ import { CreateDoctorDto, UpdateDoctorDto } from "../dto/input/doctor";
 import { requireAuth } from "../middleware/require-auth";
 import { EnumUserRole } from "../enums/user-role";
 import { verifyRoles } from "../middleware/verify-roles";
+import { uploadSingleImage } from "../middleware/multer";
 
 class DoctorRouter {
   public router: Router;
@@ -38,6 +39,15 @@ class DoctorRouter {
       requireAuth,
       verifyRoles([EnumUserRole.DOCTOR]),
       this.controller.getMyDoctor
+    );
+
+    // Upload my profile photo
+    this.router.post(
+      "/me/photo",
+      requireAuth,
+      verifyRoles([EnumUserRole.DOCTOR]),
+      ...uploadSingleImage("photo"),
+      this.controller.uploadMyPhoto
     );
   }
 }

@@ -41,6 +41,7 @@ export class AwsS3Helper {
     file: Buffer
   ): Promise<string> {
     const s3Key = key;
+
     await this.sendCommand(
       new PutObjectCommand({
         Bucket: this.bucketName,

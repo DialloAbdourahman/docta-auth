@@ -5,71 +5,10 @@ import { IUserDocument, UserModel } from "../models/user";
 import { IDoctorDocument, DoctorModel } from "../models/doctor";
 import { UpdateDoctorDto } from "../dto/input/doctor";
 import { DoctorAdminOutputDto, DoctorOutputDto } from "../dto/output/doctor";
+import { AwsS3Helper } from "../utils/s3-helper";
+import path from "path";
 
 export class DoctorService {
-  //   public createDoctorProfile = async (
-  //     dto: CreateDoctorDto,
-  //     admin: LoggedInUserTokenData
-  //   ): Promise<{ user: IUserDocument; doctor: IDoctorDocument }> => {
-  //     const existingUser = await UserModel.findOne({ email: dto.email });
-  //     if (existingUser) {
-  //       throw new BadRequestError(
-  //         EnumStatusCode.EXISTS_ALREADY,
-  //         "User already exists"
-  //       );
-  //     }
-  //     const specialty = await SpecialtyModel.findById(dto.specialtyId);
-  //     if (!specialty) {
-  //       throw new NotFoundError(
-  //         EnumStatusCode.SPECIALTY_NOT_FOUND,
-  //         "Specialty not found"
-  //       );
-  //     }
-  //     const session = await mongoose.startSession();
-  //     session.startTransaction();
-  //     try {
-  //       // Create user WITHOUT password
-  //       const user = new UserModel({
-  //         name: dto.name,
-  //         email: dto.email,
-  //         role: EnumUserRole.DOCTOR,
-  //         isActive: false,
-  //         createdBy: admin.id,
-  //       });
-  //       await user.save({ session });
-  //       const doctor = new DoctorModel({
-  //         user: user._id,
-  //         specialty: specialty._id,
-  //         name: dto.name,
-  //         biography: dto.biography,
-  //         consultationFee: dto.consultationFee,
-  //         isActive: user.isActive,
-  //         isDeleted: user.isDeleted,
-  //         createdBy: admin.id,
-  //       });
-  //       await doctor.save({ session });
-  //       // Activation token
-  //       const activationToken = TokenUtils.createActivationToken(
-  //         String(user._id)
-  //       );
-  //       user.activationToken = activationToken;
-  //       // Send email to doctor to activate his account and create a password.
-  //       await user.save({ session });
-  //       await session.commitTransaction();
-  //       session.endSession();
-  //       console.log("Doctor activation token:", activationToken);
-  //       return { user, doctor };
-  //     } catch (err) {
-  //       await session.abortTransaction();
-  //       session.endSession();
-  //       console.error("Error creating doctor via admin:", err);
-  //       throw new BadRequestError(
-  //         EnumStatusCode.BAD_REQUEST,
-  //         "Doctor creation failed"
-  //       );
-  //     }
-  //   };
-
   public updateMyDoctorInfo = async (
     userId: string,
     dto: UpdateDoctorDto
@@ -129,5 +68,48 @@ export class DoctorService {
     }
 
     return new DoctorAdminOutputDto(doctor);
+  };
+
+  public uploadMyPhoto = async (
+    userId: string,
+    file: Express.Multer.File
+  ): Promise<DoctorOutputDto> => {
+    // Find and validate user
+    const user: IUserDocument | null = (await UserModel.findById(
+      userId
+    )) as IUserDocument;
+
+    ValidateInfo.validateUser(user);
+    const s3 = new AwsS3Helper();
+
+    // Find doctor's profile for this user
+    const doctor: IDoctorDocument | null = (await DoctorModel.findOne({
+      user: user._id,
+    })
+      .populate("user")
+      .populate("specialty")) as IDoctorDocument;
+
+    if (!doctor) {
+      throw new NotFoundError(
+        EnumStatusCode.DOCTOR_NOT_FOUND,
+        "Doctor profile not found"
+      );
+    }
+
+    const oldPhoto = doctor.photo;
+
+    const ext = path.extname(file.originalname) || "";
+    const key = `doctors/${doctor._id}/profile-${Date.now()}${ext}`;
+    await s3.uploadImage(key, file.mimetype, file.buffer);
+
+    doctor.photo = key;
+    doctor.updatedBy = user;
+    await doctor.save();
+
+    if (oldPhoto) {
+      await s3.deleteImageFromS3(oldPhoto);
+    }
+
+    return new DoctorOutputDto(doctor);
   };
 }

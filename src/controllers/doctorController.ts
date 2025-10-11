@@ -26,8 +26,6 @@ export class DoctorController {
   //   public createUser = async (req: Request, res: Response): Promise<void> => {
   //     const userData: CreateUserDto = req.body;
 
-  //     await this.doctorService.createUserAndPatient(userData);
-
   //     res.status(201).json(
   //       OrchestrationResult.item({
   //         code: EnumStatusCode.CREATED_SUCCESSFULLY,
@@ -64,6 +62,28 @@ export class DoctorController {
         code: EnumStatusCode.RECOVERED_SUCCESSFULLY,
         message: "Doctor profile fetched successfully.",
         data: result,
+      })
+    );
+  };
+
+  public uploadMyPhoto = async (req: Request, res: Response): Promise<void> => {
+    const file = req.file;
+
+    if (!file) {
+      throw new BadRequestError(
+        EnumStatusCode.NO_FILE_UPLOADED,
+        "No file uploaded."
+      );
+    }
+    const output = await this.doctorService.uploadMyPhoto(
+      req.currentUser!.id,
+      file
+    );
+    res.status(200).json(
+      OrchestrationResult.item<DoctorOutputDto>({
+        code: EnumStatusCode.UPDATED_SUCCESSFULLY,
+        message: "Profile photo updated successfully.",
+        data: output,
       })
     );
   };
