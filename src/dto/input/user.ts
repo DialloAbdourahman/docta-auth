@@ -40,6 +40,12 @@ export class RefreshTokenDto {
   refreshToken: string;
 }
 
+export class ActivateAccountDto {
+  @IsString({ message: "Token must be a string" })
+  @IsNotEmpty({ message: "Token is required" })
+  token: string;
+}
+
 export class ForgotPasswordDto {
   @IsEmail({}, { message: "Please enter a valid email address" })
   @IsNotEmpty({ message: "Email is required" })

@@ -9,7 +9,7 @@ export enum Gender {
 
 export interface IPatient extends IBaseModel {
   user: IUserDocument;
-  birthday?: Date;
+  dob?: number;
   gender?: Gender;
   phoneNumber?: string;
 }
@@ -26,7 +26,7 @@ const PatientSchema = new Schema<IPatientDocument>({
     required: true,
     onDelete: "cascade",
   },
-  birthday: { type: Date, required: false },
+  dob: { type: Number, required: false },
   phoneNumber: { type: String, required: false },
   gender: { type: String, enum: Object.values(Gender), required: false },
 });

@@ -35,7 +35,6 @@ const start = async () => {
 start();
 
 // Doctor //
-// Route for the doctor to upload his picture.
 // Visit doctolib and add attributes like eductions, positions, etc etc.
 
 // Patient //

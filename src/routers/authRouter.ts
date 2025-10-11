@@ -1,7 +1,11 @@
 import { Router } from "express";
 import { AuthController } from "../controllers/authController";
 import { validationMiddleware } from "../middleware/validate-request";
-import { CreateUserDto, UpdateUserDto } from "../dto/input/user";
+import {
+  ActivateAccountDto,
+  CreateUserDto,
+  UpdateUserDto,
+} from "../dto/input/user";
 import { ActivateDoctorAccountDto } from "../dto/input/doctor";
 import {
   LoginDto,
@@ -31,8 +35,9 @@ class AuthRouter {
     );
 
     // Route to activate patient account given activation token
-    this.router.get(
+    this.router.post(
       "/activate/patient",
+      validationMiddleware(ActivateAccountDto),
       this.authController.activatePatientUser
     );
 

@@ -1,6 +1,5 @@
 import { EnumStatusCode } from "../enums/status-codes";
 import { NotFoundError } from "../errors/NotFoundError";
-import { ValidateInfo } from "../utils/validate-info";
 import { IUserDocument, UserModel } from "../models/user";
 import { IDoctorDocument, DoctorModel } from "../models/doctor";
 import { UpdateDoctorDto } from "../dto/input/doctor";
@@ -17,7 +16,6 @@ export class DoctorService {
     const user: IUserDocument | null = (await UserModel.findById(
       userId
     )) as IUserDocument;
-    ValidateInfo.validateUser(user);
 
     // Find doctor's profile for this user
     const doctor: IDoctorDocument | null = (await DoctorModel.findOne({
@@ -51,7 +49,6 @@ export class DoctorService {
     const user: IUserDocument | null = (await UserModel.findById(
       userId
     )) as IUserDocument;
-    ValidateInfo.validateUser(user);
 
     // Find doctor's profile for this user
     const doctor: IDoctorDocument | null = (await DoctorModel.findOne({
@@ -79,7 +76,6 @@ export class DoctorService {
       userId
     )) as IUserDocument;
 
-    ValidateInfo.validateUser(user);
     const s3 = new AwsS3Helper();
 
     // Find doctor's profile for this user

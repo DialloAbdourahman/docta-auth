@@ -321,9 +321,6 @@ export class AuthService {
       userId
     )) as IUserDocument;
 
-    // Validate user information
-    ValidateInfo.validateUser(user);
-
     // Apply only provided fields
     user.name = dto.name || user.name;
     user.updatedBy = user;
@@ -340,9 +337,6 @@ export class AuthService {
     const user: IUserDocument | null = (await UserModel.findById(
       userId
     )) as IUserDocument;
-
-    // Validate user information
-    ValidateInfo.validateUser(user);
 
     const isMatch = await user.comparePassword(oldPassword);
     if (!isMatch) {
@@ -361,9 +355,6 @@ export class AuthService {
     const user: IUserDocument | null = (await UserModel.findById(
       userId
     )) as IUserDocument;
-
-    // Validate user information
-    ValidateInfo.validateUser(user);
 
     user.token = null;
     await user.save();

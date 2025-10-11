@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { AuthService } from "../services/authService";
 import { OrchestrationResult } from "../utils/orchestration-result";
 import { EnumStatusCode } from "../enums/status-codes";
-import { CreateUserDto } from "../dto/input/user";
+import { ActivateAccountDto, CreateUserDto } from "../dto/input/user";
 import { ActivateDoctorAccountDto } from "../dto/input/doctor";
 import {
   LoginDto,
@@ -39,7 +39,7 @@ export class AuthController {
     req: Request,
     res: Response
   ): Promise<void> => {
-    const token: string = String(req.query.token || req.params.token || "");
+    const { token } = req.body as ActivateAccountDto;
 
     if (!token) {
       throw new BadRequestError(
