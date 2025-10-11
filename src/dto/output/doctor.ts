@@ -1,6 +1,7 @@
 import { IDoctorDocument } from "../../models/doctor";
 import { SpecialtyOutputDto } from "./specialty";
 import { UserOutputDto } from "./user";
+import { EducationOutputDto } from "./education";
 
 // Base DTO for everyone
 export class DoctorOutputDto {
@@ -15,6 +16,7 @@ export class DoctorOutputDto {
   isVerified: boolean;
   isVisible: boolean;
   photo: string | null;
+  educations: EducationOutputDto[];
 
   isDeleted: boolean;
   createdAt: number;
@@ -32,6 +34,9 @@ export class DoctorOutputDto {
     this.isVerified = doctor.isVerified;
     this.isVisible = doctor.isVisible;
     this.photo = doctor.photo || null;
+    this.educations = (doctor.educations || [])
+      .map((e) => new EducationOutputDto(e))
+      .sort((a, b) => b.year - a.year);
     this.isDeleted = doctor.isDeleted;
     this.createdAt = doctor.createdAt;
     this.updatedAt = doctor.updatedAt;

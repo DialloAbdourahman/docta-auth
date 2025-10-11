@@ -60,3 +60,7 @@ class AdminRouter {
 }
 
 export default new AdminRouter().router;
+
+// Deactive doctors.
+// Delete doctors.
+// Delete patients.

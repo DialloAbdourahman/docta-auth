@@ -10,7 +10,11 @@ import {
   Min,
   IsNotEmpty,
   IsBoolean,
+  IsArray,
+  ValidateNested,
 } from "class-validator";
+import { Type } from "class-transformer";
+import { EducationInputDto } from "./education";
 
 export class CreateDoctorDto {
   @IsString()
@@ -67,4 +71,11 @@ export class UpdateDoctorDto {
   @IsOptional()
   @IsBoolean()
   isVisible?: boolean;
+
+  // Replace-all educations array
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => EducationInputDto)
+  educations?: EducationInputDto[];
 }

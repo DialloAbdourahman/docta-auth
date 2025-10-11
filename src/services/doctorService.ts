@@ -36,6 +36,7 @@ export class DoctorService {
     doctor.biography = dto.biography ?? doctor.biography;
     doctor.consultationFee = dto.consultationFee ?? doctor.consultationFee;
     doctor.isVisible = dto.isVisible ?? doctor.isVisible;
+    doctor.educations = dto.educations ?? doctor.educations;
 
     // Audit
     doctor.updatedBy = user;

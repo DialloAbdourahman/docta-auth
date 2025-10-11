@@ -36,11 +36,7 @@ const start = async () => {
 start();
 
 // Doctor //
-// Visit doctolib and add attributes like eductions, positions, etc etc.
-
-// Admin //
-// Deactive doctors.
-// Delete doctors.
-// Delete patients.
+// We will just add it on the model and implement it on the update (ecrasement just like IYVO)
+// Visit doctolib and add attributes like diplomas (year and title), experiences (range, title), languages (title, level ENUM), faqs (question and answer), expertises (title e.g Maladie de Parkinson,Sclérose en plaques (SEP),Électromyogramme (EMG)),
 
 // Start looking at the email service with ses and sqs.

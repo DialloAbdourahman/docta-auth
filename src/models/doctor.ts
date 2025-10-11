@@ -2,6 +2,7 @@ import { Schema, model, Document, Model } from "mongoose";
 import { ISpecialtyDocument, SpecialtyModel } from "./specialty";
 import { IUserDocument, UserModel } from "./user";
 import { BaseSchemaFields, BaseSchemaPlugin, IBaseModel } from "./base";
+import { EducationSchema, IEducation } from "./education";
 
 export interface IDoctor extends IBaseModel {
   name: string;
@@ -15,6 +16,7 @@ export interface IDoctor extends IBaseModel {
   isVisible: boolean;
   isDeactivatedByAdmin: boolean;
   photo?: string;
+  educations?: IEducation[];
 }
 
 export interface IDoctorDocument extends IDoctor, Document {}
@@ -43,6 +45,7 @@ const DoctorSchema = new Schema<IDoctorDocument>({
   isVisible: { type: Boolean, default: true },
   isDeactivatedByAdmin: { type: Boolean, default: false },
   photo: { type: String, required: false },
+  educations: { type: [EducationSchema], required: false, default: [] },
 });
 
 const createSlug = (text: string): string =>
