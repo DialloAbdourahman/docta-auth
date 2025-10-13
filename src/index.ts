@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import app from "./app";
-import config from "./config";
+import { config } from "./config";
 import mongoose from "mongoose";
 import { LoggedInUserTokenData } from "./interfaces/LoggedInUserToken";
 
@@ -35,8 +35,5 @@ const start = async () => {
 
 start();
 
-// Doctor //
-// We will just add it on the model and implement it on the update (ecrasement just like IYVO)
-// Visit doctolib and add attributes like diplomas (year and title), experiences (range, title), languages (title, level ENUM), faqs (question and answer), expertises (title e.g Maladie de Parkinson,Sclérose en plaques (SEP),Électromyogramme (EMG)),
-
+// Bring all types and functions in an npm package
 // Start looking at the email service with ses and sqs.

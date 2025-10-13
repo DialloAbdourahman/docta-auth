@@ -5,6 +5,7 @@ import { EducationOutputDto } from "./education";
 import { PositionOutputDto } from "./position";
 import { LanguageOutputDto } from "./language";
 import { FaqOutputDto } from "./faq";
+import { LocationOutputDto } from "./location";
 
 // Base DTO for everyone
 export class DoctorOutputDto {
@@ -24,6 +25,7 @@ export class DoctorOutputDto {
   languages: LanguageOutputDto[];
   faqs: FaqOutputDto[];
   expertises: string[];
+  location: LocationOutputDto | null;
 
   isDeleted: boolean;
   createdAt: number;
@@ -52,6 +54,7 @@ export class DoctorOutputDto {
     );
     this.faqs = (doctor.faqs || []).map((f) => new FaqOutputDto(f));
     this.expertises = doctor.expertises || [];
+    this.location = doctor.location ? new LocationOutputDto(doctor.location) : null;
     this.isDeleted = doctor.isDeleted;
     this.createdAt = doctor.createdAt;
     this.updatedAt = doctor.updatedAt;

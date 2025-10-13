@@ -3,7 +3,7 @@ import { NotFoundError } from "../errors/NotFoundError";
 import { IUserDocument, UserModel } from "../models/user";
 import { IDoctorDocument, DoctorModel } from "../models/doctor";
 import { UpdateDoctorDto } from "../dto/input/doctor";
-import { DoctorAdminOutputDto, DoctorOutputDto } from "../dto/output/doctor";
+import { DoctorOutputDto } from "../dto/output/doctor";
 import { AwsS3Helper } from "../utils/s3-helper";
 import path from "path";
 
@@ -41,6 +41,7 @@ export class DoctorService {
     doctor.languages = dto.languages ?? doctor.languages;
     doctor.faqs = dto.faqs ?? doctor.faqs;
     doctor.expertises = dto.expertises ?? doctor.expertises;
+    doctor.location = dto.location ?? doctor.location;
 
     // Audit
     doctor.updatedBy = user;
@@ -69,7 +70,7 @@ export class DoctorService {
       );
     }
 
-    return new DoctorAdminOutputDto(doctor);
+    return new DoctorOutputDto(doctor);
   };
 
   public uploadMyPhoto = async (

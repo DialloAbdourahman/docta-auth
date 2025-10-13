@@ -19,6 +19,7 @@ import { EducationInputDto } from "./education";
 import { PositionInputDto } from "./position";
 import { LanguageInputDto } from "./language";
 import { FaqInputDto } from "./faq";
+import { LocationInputDto } from "./location";
 
 export class CreateDoctorDto {
   @IsString()
@@ -110,4 +111,10 @@ export class UpdateDoctorDto {
   @ArrayMaxSize(5, { message: "A maximum of 5 expertises is allowed" })
   @IsString({ each: true })
   expertises?: string[];
+
+  // Optional location object (replace-all when provided)
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => LocationInputDto)
+  location?: LocationInputDto;
 }

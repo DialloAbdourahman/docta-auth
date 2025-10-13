@@ -1,5 +1,5 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
-import config from "../config";
+import { config } from "../config";
 import { LoggedInUserTokenData } from "../interfaces/LoggedInUserToken";
 
 export class TokenUtils {

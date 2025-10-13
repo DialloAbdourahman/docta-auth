@@ -6,6 +6,7 @@ import { EducationSchema, IEducation } from "./education";
 import { PositionSchema, IPosition } from "./position";
 import { LanguageSchema, ILanguage } from "./language";
 import { FaqSchema, IFaq } from "./faq";
+import { LocationSchema, ILocation } from "./location";
 
 export interface IDoctor extends IBaseModel {
   name: string;
@@ -24,6 +25,7 @@ export interface IDoctor extends IBaseModel {
   languages: ILanguage[];
   faqs: IFaq[];
   expertises: string[];
+  location?: ILocation;
 }
 
 export interface IDoctorDocument extends IDoctor, Document {}
@@ -57,6 +59,7 @@ const DoctorSchema = new Schema<IDoctorDocument>({
   languages: { type: [LanguageSchema], required: true, default: [] },
   faqs: { type: [FaqSchema], required: true, default: [] },
   expertises: { type: [String], required: true, default: [] },
+  location: { type: LocationSchema, required: false },
 });
 
 const createSlug = (text: string): string =>
