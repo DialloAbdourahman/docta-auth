@@ -34,6 +34,11 @@
             "date": 1760189608918,
             "name": "/home/diallo/Documents/DOCTA/docta-auth/logs/2025-10-11.log",
             "hash": "b17b38fa457b11aee0ce434873eaf0a6303c8b47ce772b0ffde47908e36d80fe"
+        },
+        {
+            "date": 1760369002898,
+            "name": "/home/diallo/Documents/DOCTA/docta-auth/logs/2025-10-13.log",
+            "hash": "439eb84b9cf335828be1267bdbec7455811fbf44b0a37000fe08d11be6c73467"
         }
     ],
     "hashType": "sha256"

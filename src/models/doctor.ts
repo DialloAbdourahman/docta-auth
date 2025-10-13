@@ -3,6 +3,7 @@ import { ISpecialtyDocument, SpecialtyModel } from "./specialty";
 import { IUserDocument, UserModel } from "./user";
 import { BaseSchemaFields, BaseSchemaPlugin, IBaseModel } from "./base";
 import { EducationSchema, IEducation } from "./education";
+import { PositionSchema, IPosition } from "./position";
 
 export interface IDoctor extends IBaseModel {
   name: string;
@@ -17,6 +18,7 @@ export interface IDoctor extends IBaseModel {
   isDeactivatedByAdmin: boolean;
   photo?: string;
   educations?: IEducation[];
+  positions?: IPosition[];
 }
 
 export interface IDoctorDocument extends IDoctor, Document {}
@@ -46,6 +48,7 @@ const DoctorSchema = new Schema<IDoctorDocument>({
   isDeactivatedByAdmin: { type: Boolean, default: false },
   photo: { type: String, required: false },
   educations: { type: [EducationSchema], required: false, default: [] },
+  positions: { type: [PositionSchema], required: false, default: [] },
 });
 
 const createSlug = (text: string): string =>

@@ -15,6 +15,7 @@ import {
 } from "class-validator";
 import { Type } from "class-transformer";
 import { EducationInputDto } from "./education";
+import { PositionInputDto } from "./position";
 
 export class CreateDoctorDto {
   @IsString()
@@ -78,4 +79,11 @@ export class UpdateDoctorDto {
   @ValidateNested({ each: true })
   @Type(() => EducationInputDto)
   educations?: EducationInputDto[];
+
+  // Replace-all positions array
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => PositionInputDto)
+  positions?: PositionInputDto[];
 }
