@@ -5,6 +5,7 @@ import { BaseSchemaFields, BaseSchemaPlugin, IBaseModel } from "./base";
 import { EducationSchema, IEducation } from "./education";
 import { PositionSchema, IPosition } from "./position";
 import { LanguageSchema, ILanguage } from "./language";
+import { FaqSchema, IFaq } from "./faq";
 
 export interface IDoctor extends IBaseModel {
   name: string;
@@ -18,9 +19,11 @@ export interface IDoctor extends IBaseModel {
   isVisible: boolean;
   isDeactivatedByAdmin: boolean;
   photo?: string;
-  educations?: IEducation[];
-  positions?: IPosition[];
-  languages?: ILanguage[];
+  educations: IEducation[];
+  positions: IPosition[];
+  languages: ILanguage[];
+  faqs: IFaq[];
+  expertises: string[];
 }
 
 export interface IDoctorDocument extends IDoctor, Document {}
@@ -49,9 +52,11 @@ const DoctorSchema = new Schema<IDoctorDocument>({
   isVisible: { type: Boolean, default: true },
   isDeactivatedByAdmin: { type: Boolean, default: false },
   photo: { type: String, required: false },
-  educations: { type: [EducationSchema], required: false, default: [] },
-  positions: { type: [PositionSchema], required: false, default: [] },
-  languages: { type: [LanguageSchema], required: false, default: [] },
+  educations: { type: [EducationSchema], required: true, default: [] },
+  positions: { type: [PositionSchema], required: true, default: [] },
+  languages: { type: [LanguageSchema], required: true, default: [] },
+  faqs: { type: [FaqSchema], required: true, default: [] },
+  expertises: { type: [String], required: true, default: [] },
 });
 
 const createSlug = (text: string): string =>

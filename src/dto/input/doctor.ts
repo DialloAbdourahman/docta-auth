@@ -12,11 +12,13 @@ import {
   IsBoolean,
   IsArray,
   ValidateNested,
+  ArrayMaxSize,
 } from "class-validator";
 import { Type } from "class-transformer";
 import { EducationInputDto } from "./education";
 import { PositionInputDto } from "./position";
 import { LanguageInputDto } from "./language";
+import { FaqInputDto } from "./faq";
 
 export class CreateDoctorDto {
   @IsString()
@@ -94,4 +96,18 @@ export class UpdateDoctorDto {
   @ValidateNested({ each: true })
   @Type(() => LanguageInputDto)
   languages?: LanguageInputDto[];
+
+  // Replace-all FAQs array
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => FaqInputDto)
+  faqs?: FaqInputDto[];
+
+  // Replace-all expertises array (array of strings)
+  @IsOptional()
+  @IsArray()
+  @ArrayMaxSize(5, { message: "A maximum of 5 expertises is allowed" })
+  @IsString({ each: true })
+  expertises?: string[];
 }

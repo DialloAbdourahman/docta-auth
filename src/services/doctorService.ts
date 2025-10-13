@@ -39,6 +39,8 @@ export class DoctorService {
     doctor.educations = dto.educations ?? doctor.educations;
     doctor.positions = dto.positions ?? doctor.positions;
     doctor.languages = dto.languages ?? doctor.languages;
+    doctor.faqs = dto.faqs ?? doctor.faqs;
+    doctor.expertises = dto.expertises ?? doctor.expertises;
 
     // Audit
     doctor.updatedBy = user;
