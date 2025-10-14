@@ -1,9 +1,9 @@
-import { EnumStatusCode } from "../enums/status-codes";
-import { NotFoundError } from "../errors/NotFoundError";
-import { IUserDocument, UserModel } from "../models/user";
-import { IPatientDocument, PatientModel } from "../models/patient";
-import { UpdatePatientDto } from "../dto/input/patient";
-import { PatientAdminOutputDto, PatientOutputDto } from "../dto/output/patient";
+import { EnumStatusCode } from "docta-package";
+import { NotFoundError } from "docta-package";
+import { IUserDocument, UserModel } from "docta-package";
+import { IPatientDocument, PatientModel } from "docta-package";
+import { UpdatePatientDto } from "docta-package";
+import { PatientAdminOutputDto, PatientOutputDto } from "docta-package";
 
 export class PatientService {
   public updateMyPatientInfo = async (
@@ -38,7 +38,9 @@ export class PatientService {
     return new PatientOutputDto(patient);
   };
 
-  public getMyPatient = async (userId: string): Promise<PatientAdminOutputDto> => {
+  public getMyPatient = async (
+    userId: string
+  ): Promise<PatientAdminOutputDto> => {
     // Find and validate user
     const user: IUserDocument | null = (await UserModel.findById(
       userId

@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { OrchestrationResult } from "../utils/orchestration-result";
-import { EnumStatusCode } from "../enums/status-codes";
-import { UpdatePatientDto } from "../dto/input/patient";
-import { PatientAdminOutputDto, PatientOutputDto } from "../dto/output/patient";
+import { OrchestrationResult } from "docta-package";
+import { EnumStatusCode } from "docta-package";
+import { UpdatePatientDto } from "docta-package";
+import { PatientAdminOutputDto, PatientOutputDto } from "docta-package";
 import { PatientService } from "../services/patientService";
 
 export class PatientController {
@@ -32,13 +32,8 @@ export class PatientController {
     );
   };
 
-  public getMyPatient = async (
-    req: Request,
-    res: Response
-  ): Promise<void> => {
-    const result = await this.patientService.getMyPatient(
-      req.currentUser!.id
-    );
+  public getMyPatient = async (req: Request, res: Response): Promise<void> => {
+    const result = await this.patientService.getMyPatient(req.currentUser!.id);
 
     res.status(200).json(
       OrchestrationResult.item<PatientAdminOutputDto>({
@@ -49,4 +44,3 @@ export class PatientController {
     );
   };
 }
-

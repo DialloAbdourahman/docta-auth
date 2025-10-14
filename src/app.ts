@@ -1,7 +1,6 @@
 import express from "express";
-import expressAsyncHandler from "express-async-handler";
 import swaggerUi from "swagger-ui-express";
-import { errorHandler } from "./middleware/errorHandler";
+import { errorHandler } from "docta-package";
 import authRouter from "./routers/authRouter";
 import adminRouter from "./routers/adminRouter";
 import { swaggerSpec } from "./swagger";
@@ -16,10 +15,10 @@ app.use(express.json());
 app.use("/api/auth/v1/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // API routes
-app.use("/api/auth/v1", expressAsyncHandler(authRouter));
-app.use("/api/auth/v1/admin", expressAsyncHandler(adminRouter));
-app.use("/api/auth/v1/doctor", expressAsyncHandler(doctorRouter));
-app.use("/api/auth/v1/patient", expressAsyncHandler(patientRouter));
+app.use("/api/auth/v1", authRouter);
+app.use("/api/auth/v1/admin", adminRouter);
+app.use("/api/auth/v1/doctor", doctorRouter);
+app.use("/api/auth/v1/patient", patientRouter);
 
 app.use(errorHandler);
 

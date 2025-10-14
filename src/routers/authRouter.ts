@@ -1,20 +1,20 @@
 import { Router } from "express";
 import { AuthController } from "../controllers/authController";
-import { validationMiddleware } from "../middleware/validate-request";
+import { validationMiddleware } from "docta-package";
 import {
   ActivateAccountDto,
   CreateUserDto,
   UpdateUserDto,
-} from "../dto/input/user";
-import { ActivateDoctorAccountDto } from "../dto/input/doctor";
+} from "docta-package";
+import { ActivateDoctorAccountDto } from "docta-package";
 import {
   LoginDto,
   RefreshTokenDto,
   ForgotPasswordDto,
   ResetPasswordDto,
-} from "../dto/input/user";
-import { UpdatePasswordDto } from "../dto/input/user";
-import { requireAuth } from "../middleware/require-auth";
+} from "docta-package";
+import { UpdatePasswordDto } from "docta-package";
+import { requireAuth } from "docta-package";
 
 class AuthRouter {
   public readonly router: Router;

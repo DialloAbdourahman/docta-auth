@@ -1,10 +1,10 @@
 import { Router } from "express";
 import { PatientController } from "../controllers/patientController";
-import { validationMiddleware } from "../middleware/validate-request";
-import { UpdatePatientDto } from "../dto/input/patient";
-import { requireAuth } from "../middleware/require-auth";
-import { EnumUserRole } from "../enums/user-role";
-import { verifyRoles } from "../middleware/verify-roles";
+import { validationMiddleware } from "docta-package";
+import { UpdatePatientDto } from "docta-package";
+import { requireAuth } from "docta-package";
+import { EnumUserRole } from "docta-package";
+import { verifyRoles } from "docta-package";
 
 class PatientRouter {
   public router: Router;
@@ -37,4 +37,3 @@ class PatientRouter {
 }
 
 export default new PatientRouter().router;
-

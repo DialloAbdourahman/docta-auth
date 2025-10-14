@@ -1,10 +1,10 @@
-import { EnumStatusCode } from "../enums/status-codes";
-import { NotFoundError } from "../errors/NotFoundError";
-import { IUserDocument, UserModel } from "../models/user";
-import { IDoctorDocument, DoctorModel } from "../models/doctor";
-import { UpdateDoctorDto } from "../dto/input/doctor";
-import { DoctorOutputDto } from "../dto/output/doctor";
-import { AwsS3Helper } from "../utils/s3-helper";
+import { EnumStatusCode } from "docta-package";
+import { NotFoundError } from "docta-package";
+import { IUserDocument, UserModel } from "docta-package";
+import { IDoctorDocument, DoctorModel } from "docta-package";
+import { UpdateDoctorDto } from "docta-package";
+import { DoctorOutputDto } from "docta-package";
+import { AwsS3Helper } from "docta-package";
 import path from "path";
 
 export class DoctorService {

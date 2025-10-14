@@ -1,11 +1,11 @@
 import { Router } from "express";
 import { DoctorController } from "../controllers/doctorController";
-import { validationMiddleware } from "../middleware/validate-request";
-import { CreateDoctorDto, UpdateDoctorDto } from "../dto/input/doctor";
-import { requireAuth } from "../middleware/require-auth";
-import { EnumUserRole } from "../enums/user-role";
-import { verifyRoles } from "../middleware/verify-roles";
-import { uploadSingleImage } from "../middleware/multer";
+import { validationMiddleware } from "docta-package";
+import { UpdateDoctorDto } from "docta-package";
+import { requireAuth } from "docta-package";
+import { EnumUserRole } from "docta-package";
+import { verifyRoles } from "docta-package";
+import { uploadSingleImage } from "docta-package";
 
 class DoctorRouter {
   public router: Router;
@@ -18,14 +18,6 @@ class DoctorRouter {
   }
 
   private initializeRoutes() {
-    // this.router.post(
-    //   "/doctors",
-    //   requireAuth,
-    //   verifyRoles([EnumUserRole.ADMIN]),
-    //   validationMiddleware(CreateDoctorDto),
-    //   this.controller.createDoctor
-    // );
-    // Update my doctor profile information.
     this.router.patch(
       "/me",
       requireAuth,

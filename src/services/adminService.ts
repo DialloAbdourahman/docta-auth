@@ -1,19 +1,16 @@
 import mongoose from "mongoose";
-import { IUserDocument, UserModel } from "../models/user";
-import { DoctorModel, IDoctorDocument } from "../models/doctor";
-import { ISpecialtyDocument, SpecialtyModel } from "../models/specialty";
-import { TokenUtils } from "../utils/token-utils";
-import { BadRequestError } from "../errors/BadRequestError";
-import { EnumStatusCode } from "../enums/status-codes";
-import { CreateDoctorDto } from "../dto/input/doctor";
-import { NotFoundError } from "../errors/NotFoundError";
-import { EnumUserRole } from "../enums/user-role";
-import { LoggedInUserTokenData } from "../interfaces/LoggedInUserToken";
-import { CreateSpecialtyDto, UpdateSpecialtyDto } from "../dto/input/specialty";
-import {
-  SpecialtyAdminOutputDto,
-  SpecialtyOutputDto,
-} from "../dto/output/specialty";
+import { IUserDocument, UserModel } from "docta-package";
+import { DoctorModel, IDoctorDocument } from "docta-package";
+import { ISpecialtyDocument, SpecialtyModel } from "docta-package";
+import { TokenUtils } from "docta-package";
+import { BadRequestError } from "docta-package";
+import { EnumStatusCode } from "docta-package";
+import { CreateDoctorDto } from "docta-package";
+import { NotFoundError } from "docta-package";
+import { EnumUserRole } from "docta-package";
+import { LoggedInUserTokenData } from "docta-package";
+import { CreateSpecialtyDto, UpdateSpecialtyDto } from "docta-package";
+import { SpecialtyAdminOutputDto, SpecialtyOutputDto } from "docta-package";
 
 export class AdminService {
   public createDoctorProfile = async (

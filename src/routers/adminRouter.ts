@@ -1,11 +1,11 @@
 import { Router } from "express";
 import { AdminController } from "../controllers/adminController";
-import { validationMiddleware } from "../middleware/validate-request";
-import { CreateDoctorDto } from "../dto/input/doctor";
-import { CreateSpecialtyDto, UpdateSpecialtyDto } from "../dto/input/specialty";
-import { requireAuth } from "../middleware/require-auth";
-import { EnumUserRole } from "../enums/user-role";
-import { verifyRoles } from "../middleware/verify-roles";
+import { validationMiddleware } from "docta-package";
+import { CreateDoctorDto } from "docta-package";
+import { CreateSpecialtyDto, UpdateSpecialtyDto } from "docta-package";
+import { requireAuth } from "docta-package";
+import { EnumUserRole } from "docta-package";
+import { verifyRoles } from "docta-package";
 
 class AdminRouter {
   public router: Router;

@@ -1,20 +1,10 @@
 import { Request, Response } from "express";
 import { DoctorService } from "../services/doctorService";
-import { OrchestrationResult } from "../utils/orchestration-result";
-import { EnumStatusCode } from "../enums/status-codes";
-import { CreateUserDto } from "../dto/input/user";
-import { ActivateDoctorAccountDto, UpdateDoctorDto } from "../dto/input/doctor";
-import {
-  LoginDto,
-  RefreshTokenDto,
-  ForgotPasswordDto,
-  ResetPasswordDto,
-} from "../dto/input/user";
-import { LoggedInUserOutputDto } from "../dto/output/user";
-import { BadRequestError } from "../errors/BadRequestError";
-import { UpdateUserDto } from "../dto/input/user";
-import { UpdatePasswordDto } from "../dto/input/user";
-import { DoctorOutputDto } from "../dto/output/doctor";
+import { OrchestrationResult } from "docta-package";
+import { EnumStatusCode } from "docta-package";
+import { UpdateDoctorDto } from "docta-package";
+import { BadRequestError } from "docta-package";
+import { DoctorOutputDto } from "docta-package";
 
 export class DoctorController {
   private doctorService: DoctorService;

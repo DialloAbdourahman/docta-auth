@@ -1,17 +1,17 @@
-import { EnumStatusCode } from "../enums/status-codes";
-import { BadRequestError } from "../errors/BadRequestError";
+import { EnumStatusCode } from "docta-package";
+import { BadRequestError } from "docta-package";
 import mongoose from "mongoose";
-import { IUserDocument, UserModel } from "../models/user";
-import { IPatientDocument, PatientModel } from "../models/patient";
-import { DoctorModel } from "../models/doctor";
-import { TokenUtils } from "../utils/token-utils";
-import { CreateUserDto, UpdateUserDto } from "../dto/input/user";
-import { NotFoundError } from "../errors/NotFoundError";
-import { UnAuthorizedError } from "../errors/UnAuthorizedError";
-import { LoggedInUserOutputDto, UserOutputDto } from "../dto/output/user";
-import { LoggedInUserTokenData } from "../interfaces/LoggedInUserToken";
-import { EnumUserRole } from "../enums/user-role";
-import { ValidateInfo } from "../utils/validate-info";
+import { IUserDocument, UserModel } from "docta-package";
+import { IPatientDocument, PatientModel } from "docta-package";
+import { DoctorModel } from "docta-package";
+import { TokenUtils } from "docta-package";
+import { CreateUserDto, UpdateUserDto } from "docta-package";
+import { NotFoundError } from "docta-package";
+import { UnAuthorizedError } from "docta-package";
+import { LoggedInUserOutputDto, UserOutputDto } from "docta-package";
+import { LoggedInUserTokenData } from "docta-package";
+import { EnumUserRole } from "docta-package";
+import { ValidateInfo } from "docta-package";
 
 export class AuthService {
   public createUserAndPatient = async (

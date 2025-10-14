@@ -1,13 +1,10 @@
 import { Request, Response } from "express";
 import { AdminService } from "../services/adminService";
-import { OrchestrationResult } from "../utils/orchestration-result";
-import { EnumStatusCode } from "../enums/status-codes";
-import { CreateDoctorDto } from "../dto/input/doctor";
-import { CreateSpecialtyDto, UpdateSpecialtyDto } from "../dto/input/specialty";
-import {
-  SpecialtyAdminOutputDto,
-  SpecialtyOutputDto,
-} from "../dto/output/specialty";
+import { OrchestrationResult } from "docta-package";
+import { EnumStatusCode } from "docta-package";
+import { CreateDoctorDto } from "docta-package";
+import { CreateSpecialtyDto, UpdateSpecialtyDto } from "docta-package";
+import { SpecialtyAdminOutputDto, SpecialtyOutputDto } from "docta-package";
 
 export class AdminController {
   private adminService: AdminService;

@@ -1,19 +1,19 @@
 import { Request, Response } from "express";
 import { AuthService } from "../services/authService";
-import { OrchestrationResult } from "../utils/orchestration-result";
-import { EnumStatusCode } from "../enums/status-codes";
-import { ActivateAccountDto, CreateUserDto } from "../dto/input/user";
-import { ActivateDoctorAccountDto } from "../dto/input/doctor";
+import { OrchestrationResult } from "docta-package";
+import { EnumStatusCode } from "docta-package";
+import { ActivateAccountDto, CreateUserDto } from "docta-package";
+import { ActivateDoctorAccountDto } from "docta-package";
 import {
   LoginDto,
   RefreshTokenDto,
   ForgotPasswordDto,
   ResetPasswordDto,
-} from "../dto/input/user";
-import { LoggedInUserOutputDto, UserOutputDto } from "../dto/output/user";
-import { BadRequestError } from "../errors/BadRequestError";
-import { UpdateUserDto } from "../dto/input/user";
-import { UpdatePasswordDto } from "../dto/input/user";
+} from "docta-package";
+import { LoggedInUserOutputDto, UserOutputDto } from "docta-package";
+import { BadRequestError } from "docta-package";
+import { UpdateUserDto } from "docta-package";
+import { UpdatePasswordDto } from "docta-package";
 
 export class AuthController {
   private authService: AuthService;

@@ -2,7 +2,7 @@ import "reflect-metadata";
 import app from "./app";
 import { config } from "./config";
 import mongoose from "mongoose";
-import { LoggedInUserTokenData } from "./interfaces/LoggedInUserToken";
+import { LoggedInUserTokenData } from "docta-package";
 
 declare global {
   namespace Express {
