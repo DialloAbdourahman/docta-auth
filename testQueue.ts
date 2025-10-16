@@ -7,7 +7,7 @@ const run = async () => {
     routingKey: RoutingKey.PATIENT_CREATED,
     message: {
       id: "68f11c6f7918db134b4e8e07",
-      email: "toto@gmail.com",
+      email: "dialliabdourahman78@gmail.com",
       fullName: "Toto",
       token:
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGYxMWM2Zjc5MThkYjEzNGI0ZThlMDciLCJpYXQiOjE3NjA2MzE5MTl9.avl0WkaNbQEg0ujrvz_VnH--qW5RDNgWXRYKdMy1zKU",
