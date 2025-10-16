@@ -1,4 +1,4 @@
-import { EnumStatusCode } from "docta-package";
+import { EnumStatusCode, Exchanges, RoutingKey } from "docta-package";
 import { BadRequestError } from "docta-package";
 import mongoose from "mongoose";
 import { IUserDocument, UserModel } from "docta-package";
@@ -12,6 +12,7 @@ import { LoggedInUserOutputDto, UserOutputDto } from "docta-package";
 import { LoggedInUserTokenData } from "docta-package";
 import { EnumUserRole } from "docta-package";
 import { ValidateInfo } from "docta-package";
+import { publishToTopicExchange, PatientCreatedEvent } from "docta-package";
 
 export class AuthService {
   public createUserAndPatient = async (
@@ -56,6 +57,16 @@ export class AuthService {
 
       // Send activation email to the user
       console.log("Activation token generated:", activationToken);
+      await publishToTopicExchange<PatientCreatedEvent>({
+        exchange: Exchanges.DOCTA_EXCHANGE,
+        routingKey: RoutingKey.PATIENT_CREATED,
+        message: {
+          id: user.id,
+          email: user.email,
+          fullName: user.name,
+          token: activationToken,
+        },
+      });
       return { user, patient };
     } catch (error) {
       await session.abortTransaction();

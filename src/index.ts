@@ -35,5 +35,5 @@ const start = async () => {
 
 start();
 
-// Bring all types and functions in an npm package
 // Start looking at the email service with ses and sqs.
+// Sudo systemctl start rabbitmq-server # Start the service if not running

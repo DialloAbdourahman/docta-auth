@@ -16,6 +16,7 @@ interface Config {
   awsSecretKey: string;
   awsS3Bucket: string;
   awsS3Region: string;
+  rabbitmqHost: string;
 }
 
 export const config: Config = {
@@ -32,4 +33,5 @@ export const config: Config = {
   awsSecretKey: String(process.env.AWS_SECRET_KEY),
   awsS3Bucket: String(process.env.AWS_S3_BUCKET),
   awsS3Region: String(process.env.AWS_S3_REGION),
+  rabbitmqHost: String(process.env.RABBITMQ_HOST),
 };
