@@ -1,4 +1,9 @@
-import { EnumStatusCode, Exchanges, RoutingKey } from "docta-package";
+import {
+  EnumStatusCode,
+  Exchanges,
+  ForgotPasswordEvent,
+  RoutingKey,
+} from "docta-package";
 import { BadRequestError } from "docta-package";
 import mongoose from "mongoose";
 import { IUserDocument, UserModel } from "docta-package";
@@ -57,7 +62,7 @@ export class AuthService {
 
       // Send activation email to the user
       console.log("Activation token generated:", activationToken);
-      await publishToTopicExchange<PatientCreatedEvent>({
+      publishToTopicExchange<PatientCreatedEvent>({
         exchange: Exchanges.DOCTA_EXCHANGE,
         routingKey: RoutingKey.PATIENT_CREATED,
         message: {
@@ -287,6 +292,16 @@ export class AuthService {
 
     // TODO: send token via email
     console.log("Forgot password token generated:", token);
+    publishToTopicExchange<ForgotPasswordEvent>({
+      exchange: Exchanges.DOCTA_EXCHANGE,
+      routingKey: RoutingKey.FORGOT_PASSWORD,
+      message: {
+        id: user.id,
+        email: user.email,
+        fullName: user.name,
+        token,
+      },
+    });
   };
 
   public resetPassword = async (

@@ -84,7 +84,7 @@ export class AuthController {
 
     res.status(200).json(
       OrchestrationResult.item<LoggedInUserOutputDto>({
-        code: EnumStatusCode.UPDATED_SUCCESSFULLY,
+        code: EnumStatusCode.LOGGED_IN_SUCCESSFULLY,
         message: "Login successful",
         data: result,
       })

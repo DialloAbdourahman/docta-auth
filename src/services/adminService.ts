@@ -1,5 +1,12 @@
 import mongoose from "mongoose";
-import { IUserDocument, UserModel } from "docta-package";
+import {
+  DoctorCreatedEvent,
+  Exchanges,
+  IUserDocument,
+  publishToTopicExchange,
+  RoutingKey,
+  UserModel,
+} from "docta-package";
 import { DoctorModel, IDoctorDocument } from "docta-package";
 import { ISpecialtyDocument, SpecialtyModel } from "docta-package";
 import { TokenUtils } from "docta-package";
@@ -71,6 +78,16 @@ export class AdminService {
       session.endSession();
 
       console.log("Doctor activation token:", activationToken);
+      publishToTopicExchange<DoctorCreatedEvent>({
+        exchange: Exchanges.DOCTA_EXCHANGE,
+        routingKey: RoutingKey.DOCTOR_CREATED,
+        message: {
+          id: user.id,
+          email: user.email,
+          fullName: user.name,
+          token: activationToken,
+        },
+      });
       return { user, doctor };
     } catch (err) {
       await session.abortTransaction();
