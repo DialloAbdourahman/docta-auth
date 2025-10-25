@@ -1,4 +1,4 @@
-import { EnumStatusCode } from "docta-package";
+import { EnumStatusCode, ValidateInfo } from "docta-package";
 import { NotFoundError } from "docta-package";
 import { IUserDocument, UserModel } from "docta-package";
 import { IDoctorDocument, DoctorModel } from "docta-package";
@@ -63,12 +63,7 @@ export class DoctorService {
       .populate("user")
       .populate("specialty")) as IDoctorDocument;
 
-    if (!doctor) {
-      throw new NotFoundError(
-        EnumStatusCode.DOCTOR_NOT_FOUND,
-        "Doctor profile not found"
-      );
-    }
+    ValidateInfo.validateDoctor(doctor);
 
     return new DoctorOutputDto(doctor);
   };
