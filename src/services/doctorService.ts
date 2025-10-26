@@ -1,4 +1,9 @@
-import { EnumStatusCode, ValidateInfo } from "docta-package";
+import {
+  EnumStatusCode,
+  ExpertiseModel,
+  IExpertiseDocument,
+  ValidateInfo,
+} from "docta-package";
 import { NotFoundError } from "docta-package";
 import { IUserDocument, UserModel } from "docta-package";
 import { IDoctorDocument, DoctorModel } from "docta-package";
@@ -22,7 +27,8 @@ export class DoctorService {
       user: user._id,
     })
       .populate("user")
-      .populate("specialty")) as IDoctorDocument;
+      .populate("specialty")
+      .populate("expertises")) as IDoctorDocument;
 
     if (!doctor) {
       throw new NotFoundError(
@@ -40,12 +46,28 @@ export class DoctorService {
     doctor.positions = dto.positions ?? doctor.positions;
     doctor.languages = dto.languages ?? doctor.languages;
     doctor.faqs = dto.faqs ?? doctor.faqs;
-    doctor.expertises = dto.expertises ?? doctor.expertises;
+
+    if (dto.expertises) {
+      const expertises = [] as IExpertiseDocument[];
+      for (const expertise of dto.expertises) {
+        const expertiseDoc = await ExpertiseModel.findById(expertise);
+        if (expertiseDoc) {
+          expertises.push(expertiseDoc);
+        } else {
+          throw new NotFoundError(
+            EnumStatusCode.EXPERTISE_NOT_FOUND,
+            "Expertise not found"
+          );
+        }
+      }
+      doctor.expertises = expertises;
+    }
     doctor.location = dto.location ?? doctor.location;
 
     // Audit
     doctor.updatedBy = user;
 
+    await doctor.populate("expertises");
     await doctor.save();
     return new DoctorOutputDto(doctor);
   };
@@ -61,7 +83,8 @@ export class DoctorService {
       user: user._id,
     })
       .populate("user")
-      .populate("specialty")) as IDoctorDocument;
+      .populate("specialty")
+      .populate("expertises")) as IDoctorDocument;
 
     ValidateInfo.validateDoctor(doctor);
 
@@ -84,7 +107,8 @@ export class DoctorService {
       user: user._id,
     })
       .populate("user")
-      .populate("specialty")) as IDoctorDocument;
+      .populate("specialty")
+      .populate("expertises")) as IDoctorDocument;
 
     if (!doctor) {
       throw new NotFoundError(
