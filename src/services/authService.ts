@@ -349,6 +349,7 @@ export class AuthService {
 
     // Apply only provided fields
     user.name = dto.name || user.name;
+    user.timezone = dto.timezone || user.timezone;
     user.updatedBy = user;
 
     await user.save();

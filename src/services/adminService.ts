@@ -50,6 +50,7 @@ export class AdminService {
         email: dto.email,
         role: EnumUserRole.DOCTOR,
         isActive: false,
+        timezone: dto.timezone,
         createdBy: admin.id,
       });
       await user.save({ session });
