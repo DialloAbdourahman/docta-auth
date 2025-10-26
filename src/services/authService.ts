@@ -41,6 +41,7 @@ export class AuthService {
         email: userData.email,
         password: userData.password,
         role: EnumUserRole.PATIENT,
+        timezone: userData.timezone,
       });
       await user.save({ session });
 
