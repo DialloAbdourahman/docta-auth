@@ -60,7 +60,7 @@ export class AdminService {
         specialty: specialty._id,
         name: dto.name,
         biography: dto.biography,
-        consultationFee: dto.consultationFee,
+        consultationFeePerHour: dto.consultationFeePerHour,
         isActive: user.isActive,
         isDeleted: user.isDeleted,
         createdBy: admin.id,
