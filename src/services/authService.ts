@@ -88,7 +88,7 @@ export class AuthService {
   public activatePatientUser = async (
     token: string
   ): Promise<IUserDocument> => {
-    const userId = TokenUtils.decodeActivationToken(token);
+    const userId = TokenUtils.verifyActivationToken(token);
     if (!userId) {
       throw new UnAuthorizedError(
         EnumStatusCode.UNAUTHORIZED,
@@ -126,7 +126,7 @@ export class AuthService {
     token: string,
     password: string
   ): Promise<IUserDocument> => {
-    const userId = TokenUtils.decodeActivationToken(token);
+    const userId = TokenUtils.verifyActivationToken(token);
     if (!userId) {
       throw new UnAuthorizedError(
         EnumStatusCode.UNAUTHORIZED,
@@ -310,7 +310,7 @@ export class AuthService {
     password: string
   ): Promise<void> => {
     // 1. Decode forgot password token
-    const userId = TokenUtils.decodeForgotPasswordToken(token);
+    const userId = TokenUtils.verifyForgotPasswordToken(token);
     if (!userId) {
       throw new UnAuthorizedError(
         EnumStatusCode.UNAUTHORIZED,

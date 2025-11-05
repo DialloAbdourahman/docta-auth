@@ -38,7 +38,11 @@ export class DoctorService {
     }
 
     // Update only provided fields
-    doctor.name = dto.name ?? doctor.name;
+    doctor.title = dto.title ?? doctor.title;
+    doctor.professionalEmail =
+      dto.professionalEmail ?? doctor.professionalEmail;
+    doctor.dontBookMeBeforeInMins =
+      dto.dontBookMeBeforeInMins ?? doctor.dontBookMeBeforeInMins;
     doctor.biography = dto.biography ?? doctor.biography;
     doctor.consultationFeePerHour =
       dto.consultationFeePerHour ?? doctor.consultationFeePerHour;

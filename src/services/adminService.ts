@@ -46,7 +46,7 @@ export class AdminService {
     try {
       // Create user WITHOUT password
       const user = new UserModel({
-        name: dto.name,
+        name: dto.fullname,
         email: dto.email,
         role: EnumUserRole.DOCTOR,
         isActive: false,
@@ -58,7 +58,8 @@ export class AdminService {
       const doctor = new DoctorModel({
         user: user._id,
         specialty: specialty._id,
-        name: dto.name,
+        title: dto.title,
+        professionalEmail: dto.professionalEmail,
         biography: dto.biography,
         consultationFeePerHour: dto.consultationFeePerHour,
         isActive: user.isActive,
